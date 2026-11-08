@@ -1,0 +1,14 @@
+node_modules/
+test-results/
+test-results-webkit/
+test-results-pages/
+playwright-report/
+.idea/
+tmp/
+dist/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+Thumbs.db
