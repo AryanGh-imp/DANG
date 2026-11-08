@@ -1,0 +1,32 @@
+name: Bug report
+description: Report a reproducible application or deployment problem.
+title: "[Bug]: "
+body:
+  - type: markdown
+    attributes:
+      value: Use synthetic examples. Do not upload personal backups, credentials or browser profiles. Follow SECURITY.md for sensitive vulnerabilities.
+  - type: input
+    id: environment
+    attributes:
+      label: Browser, OS and application version
+      placeholder: Chrome on Android; commit or deployed date
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Steps to reproduce
+      description: Include the application path, selected language/calendar and relevant settings.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and observed behavior
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Synthetic example or redacted screenshot
+      description: Include only information needed to reproduce the issue.
