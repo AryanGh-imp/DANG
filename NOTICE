@@ -1,0 +1,28 @@
+DANG third-party and artwork notices
+
+Application source code and project documentation are licensed under the MIT
+License in LICENSE, except for separately identified third-party materials.
+
+Vazirmatn
+  Files: assets/fonts/*.woff2
+  Source: https://github.com/rastikerdar/vazirmatn
+  Distribution: @fontsource-variable/vazirmatn 5.3.0
+  License: SIL Open Font License 1.1
+  Full license and copyright notice: assets/fonts/OFL-Vazirmatn.txt
+
+Brand artwork
+  Original file supplied by the project maintainer:
+    Ancient Warrior Engraving Emblem.png
+  Preserved source: assets/branding/dang-emblem.png
+  SHA-256: e8c13fbdd2bf52e520e215b65beca733d24def5bbff2a8afb115ec06fdcfc87f
+  Derived assets: assets/branding/dang-emblem.webp, icon-*.png, social-card.png
+  This artwork is not covered by the MIT software license. Contact the
+  maintainer, https://github.com/AryanGh-imp, for permission to reuse the artwork.
+  No upstream artwork author or license metadata accompanied the supplied file.
+
+Development dependencies
+  @playwright/test and playwright: Apache-2.0
+  @axe-core/playwright and axe-core: MPL-2.0
+  fake-indexeddb: Apache-2.0
+  These packages are used only for development and testing, and are excluded
+  from the deployed website. Their distributions contain their license notices.
