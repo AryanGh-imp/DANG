@@ -129,6 +129,7 @@ test('capture branded desktop and mobile previews', async ({ page, browserName }
   await page.setViewportSize({ width: 1440, height: 1080 });
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: 'docs/previews/desktop.png', fullPage: true });
+  await page.locator('.author-link').screenshot({ path: 'docs/previews/author-badge.png' });
   await page.setViewportSize({ width: 390, height: 844 });
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: 'docs/previews/mobile.png', fullPage: true });
@@ -139,6 +140,7 @@ test('capture branded desktop and mobile previews', async ({ page, browserName }
   await expect(page.locator('#status')).toBeHidden();
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: 'docs/previews/imperial-dark.png', fullPage: true });
+  await page.locator('.author-link').screenshot({ path: 'docs/previews/author-badge-dark.png' });
   await page.locator('#t3').click();
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: 'docs/previews/report.png', fullPage: true });

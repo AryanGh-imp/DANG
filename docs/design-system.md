@@ -23,7 +23,7 @@ CSS custom properties in `assets/css/styles.css` define surfaces, text, borders,
 - Amount, category, and date are the primary entry fields. The form supports Enter, inline errors, and retaining drafts after failed writes.
 - Editing uses a centered desktop dialog and a mobile bottom sheet. Focus is trapped inside, Escape closes it, and closing restores focus to the expense.
 - Categories and themes have labels and selected states in addition to color. Calendar intensity is limited to preserve text contrast.
-- The profile credit is an explicit external link with a touch-sized target and safe new-tab attributes.
+- The profile credit uses a compact capsule, an AG monogram, bronze accents, a two-line GitHub/handle label, and an external-link arrow. It has a touch-sized target, visible focus and safe new-tab attributes.
 - Vazirmatn is self-hosted, with tabular numbers, variable weights, and local Arabic/Latin subsets. Runtime typography does not contact a font CDN.
 - Reduced-motion preferences disable animations and transitions. Text can wrap across rows, totals, and summaries.
 
