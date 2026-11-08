@@ -1,0 +1,71 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches-ignore: [main]
+  workflow_dispatch:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    name: Source, data and release validation
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm run build:pages
+
+  browsers:
+    name: Browser checks (${{ matrix.browser }})
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          cache: npm
+      - run: npm ci
+      - name: Install browser and system libraries
+        run: npx playwright install --with-deps ${{ matrix.browser }}
+      - name: Chromium behavior and design
+        if: matrix.browser == 'chromium'
+        run: npm run test:e2e
+      - name: Test the production Pages artifact
+        if: matrix.browser == 'chromium'
+        run: npm run test:pages
+      - name: WebKit design and accessibility
+        if: matrix.browser == 'webkit'
+        run: npm run test:webkit
+      - name: Retain failure diagnostics
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: browser-${{ matrix.browser }}-${{ github.run_id }}
+          path: |
+            test-results/
+            test-results-webkit/
+            test-results-pages/
+            playwright-report/
+          if-no-files-found: ignore
+          retention-days: 7
