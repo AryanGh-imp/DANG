@@ -1,0 +1,38 @@
+{
+  "name": "dang-expenses",
+  "version": "4.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/store.test.js",
+    "test:e2e": "playwright test",
+    "serve": "node scripts/serve.js",
+    "check": "node scripts/check.js",
+    "build:pages": "node scripts/build-pages.js",
+    "serve:pages": "node scripts/serve.js --built",
+    "test:webkit": "playwright test --config playwright.webkit.config.js",
+    "test:pages": "npm run build:pages && playwright test --config playwright.pages.config.js"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.56.1",
+    "fake-indexeddb": "^6.2.4"
+  },
+  "description": "A private, offline-first expense ledger with Persian and English interfaces, Jalali and Gregorian calendars, and an Achaemenid-inspired design.",
+  "license": "MIT",
+  "author": {
+    "url": "https://github.com/AryanGh-imp",
+    "name": "AryanGh-imp"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AryanGh-imp/DANG.git"
+  },
+  "homepage": "https://aryangh-imp.github.io/DANG/",
+  "bugs": {
+    "url": "https://github.com/AryanGh-imp/DANG/issues"
+  },
+  "engines": {
+    "node": ">=22"
+  }
+}
