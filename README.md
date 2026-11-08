@@ -42,7 +42,7 @@ Screenshots use synthetic data in isolated test browsers.
 
 ## Run locally
 
-Use Node.js 24 LTS, or a supported version satisfying `engines.node`. From the repository directory:
+Use Node.js 26 LTS, selected by `.nvmrc`. CI reads the same file, and `engines.node` requires Node.js 26 or newer. From the repository directory:
 
 ```sh
 npm ci

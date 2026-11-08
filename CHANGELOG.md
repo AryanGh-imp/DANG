@@ -27,6 +27,7 @@ Initial project release.
 - Added MIT source/documentation licensing, font and artwork notices, contribution guidance and security reporting instructions.
 - Added a validated static release allowlist and production-artifact browser checks.
 - Added reusable CI with Chromium/WebKit checks and a gated GitHub Pages workflow.
+- Aligned development and CI with Node.js 26 LTS using `.nvmrc` as the shared version selector.
 - Organized the initial source history into meaningful module and documentation commits.
 
 This entry records local release preparation. Publication occurs only after a reviewed push and successful Pages workflow run.

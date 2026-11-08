@@ -39,7 +39,7 @@ Publish the reviewed release tag separately with `git push origin v1.0.0`. The t
 
 `pages.yml` runs for pushes to `main` and manual runs on `main`. It calls the reusable CI workflow, then assembles `dist/`, configures Pages, uploads the Pages artifact, and deploys it. Deployment waits for every validation and browser job to pass. Official actions are pinned to verified commit hashes with their release versions recorded in comments.
 
-Default workflow permissions are `contents: read`. Pages configuration/deployment jobs receive `pages: write` where needed; the deployment job also receives `id-token: write`. The workflow uses the `github-pages` environment, which can have repository-managed protection rules. No personal access token or application secret is required.
+All setup-node steps read `.nvmrc`, which selects Node.js 26 LTS. Default workflow permissions are `contents: read`. Pages configuration/deployment jobs receive `pages: write` where needed; the deployment job also receives `id-token: write`. The workflow uses the `github-pages` environment, which can have repository-managed protection rules. No personal access token or application secret is required.
 
 The deployment concurrency group serializes Pages runs. A manual run on a branch other than `main` is skipped so an unreleased branch cannot replace the live site through that trigger.
 

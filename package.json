@@ -33,6 +33,6 @@
     "url": "https://github.com/AryanGh-imp/DANG/issues"
   },
   "engines": {
-    "node": ">=22"
+    "node": ">=26"
   }
 }

@@ -2,7 +2,7 @@
 
 ## Requirements
 
-- Node.js 24 LTS is the project baseline (`.nvmrc`); `package.json` permits Node.js 22 or newer.
+- Node.js 26 LTS is the project baseline (`.nvmrc`); `package.json` requires Node.js 26 or newer. CI reads `.nvmrc` directly so its selected major version stays consistent with local development.
 - npm and the committed lockfile provide reproducible development dependencies.
 - Chrome or Playwright Chromium for the full browser suite; Playwright WebKit for Safari-engine design checks.
 - Python 3 and Pillow only when regenerating brand images. They are not required to run or deploy DANG.
