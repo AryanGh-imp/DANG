@@ -1,0 +1,21 @@
+{
+  "v": 3,
+  "settings": {
+    "theme": "persepolis",
+    "unit": "toman",
+    "ucustom": "",
+    "cal": "j",
+    "lang": "en",
+    "budget": 6000000,
+    "uv": 1,
+    "cats": [
+      { "k": "food", "c": "#956b35" },
+      { "k": "move", "c": "#4d6b89" },
+      { "k": "other", "c": "#77746b" }
+    ]
+  },
+  "items": [
+    { "id": "sample-lunch", "date": "2026-11-08", "amt": 185000, "desc": "Synthetic example: lunch", "cat": "food" },
+    { "id": "sample-transport", "date": "2026-11-08", "amt": 72000, "desc": "Synthetic example: transport", "cat": "move" }
+  ]
+}
