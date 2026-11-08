@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="DANG" />
+    <meta name="theme-color" content="#f1eee5" />
+    <meta name="author" content="AryanGh-imp" />
+    <link rel="canonical" href="https://aryangh-imp.github.io/DANG/" />
+    <meta property="og:url" content="https://aryangh-imp.github.io/DANG/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="description"
+      content="دفتر هزینه‌های شخصی DANG؛ فارسی و انگلیسی، با تقویم شمسی، پشتیبان‌گیری و دسترسی آفلاین."
+    />
+    <meta property="og:title" content="DANG — دفتر هزینه‌های شخصی" />
+    <meta
+      property="og:description"
+      content="حساب روزانه، با هویتی الهام‌گرفته از هنر ایران باستان."
+    />
+    <meta
+      property="og:image"
+      content="https://aryangh-imp.github.io/DANG/assets/branding/social-card.png"
+    />
+    <meta property="og:type" content="website" />
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link
+      rel="icon"
+      href="./assets/branding/icon-32.png"
+      type="image/png"
+      sizes="32x32"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="./assets/branding/icon-180.png"
+      sizes="180x180"
+    />
+    <link
+      rel="preload"
+      href="./assets/fonts/vazirmatn-arabic-wght-normal.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="./assets/css/styles.css" />
+    <title>DANG — دفتر هزینه‌ها</title>
+  </head>
+  <body>
+    <a href="#workspace" class="skip-link" data-i="skip_main"
+      >رفتن به محتوای اصلی</a
+    >
+    <div class="app-shell" id="appShell">
+      <aside class="sidebar" aria-label="DANG">
+        <div class="brand">
+          <img
+            src="./assets/branding/icon-192.png"
+            alt=""
+            width="52"
+            height="52"
+          />
+          <div>
+            <strong lang="en" translate="no">DANG</strong
+            ><span data-i="brand_caption">دفتر هزینه‌های شخصی</span>
+          </div>
+        </div>
+        <nav class="tabs" aria-label="بخش‌های برنامه" id="navigation">
+          <button type="button" id="t1" class="on" data-icon="plus">
+            <span data-i="tab_add">ثبت</span>
+          </button>
+          <button type="button" id="t2" data-icon="calendar">
+            <span data-i="tab_cal">تقویم</span>
+          </button>
+          <button type="button" id="t3" data-icon="chart">
+            <span data-i="tab_rep">گزارش</span>
+          </button>
+          <button type="button" id="t4" data-icon="settings">
+            <span data-i="tab_set">تنظیمات</span>
+          </button>
+        </nav>
+        <div class="sidebar-foot">
+          <div class="lotus-rule" aria-hidden="true"><span>✦</span></div>
+          <p data-i="brand_motto">هر هزینه، روشن و ماندگار.</p>
+          <div class="privacy-line">
+            <span data-icon="shield"></span
+            ><span data-i="device_private">خصوصی، روی همین دستگاه</span>
+          </div>
+          <div class="connection-line">
+            <i aria-hidden="true"></i
+            ><span id="connectionState">در حال آماده‌سازی…</span>
+          </div>
+        </div>
+      </aside>
+
+      <main id="workspace" class="workspace" tabindex="-1">
+        <header class="workspace-header">
+          <div>
+            <div class="mobile-brand" lang="en" translate="no">
+              <img
+                src="./assets/branding/icon-192.png"
+                alt=""
+                width="32"
+                height="32"
+              /><strong>DANG</strong>
+            </div>
+            <h1 id="pageTitle">دفتر هزینه‌ها</h1>
+            <p id="pageSubtitle">
+              هزینه‌های روزانه‌ات را با خیال آسوده ثبت کن.
+            </p>
+          </div>
+          <button
+            id="goCalendar"
+            class="date-chip"
+            type="button"
+            data-icon="calendar"
+          >
+            <span id="headerDate"></span>
+          </button>
+        </header>
+        <div
+          id="status"
+          class="status"
+          role="status"
+          aria-live="polite"
+          hidden
+        ></div>
+        <noscript
+          >برای استفاده از برنامه، JavaScript مرورگر را فعال کنید.</noscript
+        >
+
+        <section id="v1" aria-labelledby="t1">
+          <section class="ledger-summary" aria-label="خلاصهٔ هزینه‌ها">
+            <div id="overview" class="ledger-overview"></div>
+            <figure class="hero-emblem">
+              <img
+                src="./assets/branding/dang-emblem.webp"
+                alt="نشان حکاکی‌شدهٔ جنگجوی DANG"
+                width="780"
+                height="910"
+                fetchpriority="high"
+              />
+            </figure>
+          </section>
+          <div id="bud1" class="budget-area"></div>
+          <div class="entry-layout">
+            <form id="expenseForm" class="card entry-card" autocomplete="off">
+              <div class="panel-heading">
+                <span class="panel-symbol" data-icon="plus"></span>
+                <div>
+                  <h2 data-i="entry_heading">یک هزینهٔ تازه</h2>
+                  <p data-i="entry_note">جزئیات را وارد کن؛ باقی با ما.</p>
+                </div>
+              </div>
+              <div class="amount-field">
+                <label for="amt" data-i="amount">مبلغ</label>
+                <div class="amount-entry">
+                  <input
+                    id="amt"
+                    name="amount"
+                    inputmode="decimal"
+                    autocomplete="off"
+                    data-p="ph_amt"
+                    aria-describedby="amountNote"
+                  /><span class="un"></span>
+                </div>
+                <p class="note" id="amountNote" data-i="amount_note"></p>
+                <p
+                  id="amtError"
+                  class="field-error"
+                  aria-live="polite"
+                  hidden
+                ></p>
+              </div>
+              <div class="field">
+                <label for="desc" data-i="desc">توضیح</label
+                ><input
+                  id="desc"
+                  name="description"
+                  autocomplete="off"
+                  data-p="ph_desc"
+                  maxlength="10000"
+                />
+              </div>
+              <fieldset class="field">
+                <legend data-i="cat">دسته</legend>
+                <div class="chips" id="chips"></div>
+              </fieldset>
+              <fieldset class="field">
+                <legend data-i="date">تاریخ</legend>
+                <div class="dp" id="dpAdd"></div>
+              </fieldset>
+              <button
+                type="submit"
+                class="btn primary"
+                id="add"
+                data-icon="plus"
+              >
+                <span data-i="add">ثبت هزینه</span>
+              </button>
+            </form>
+            <div id="today" class="activity-feed"></div>
+          </div>
+        </section>
+
+        <section id="v2" class="calendar-layout" hidden aria-labelledby="t2">
+          <div class="card calendar-card"><div id="cal"></div></div>
+          <div id="calday"></div>
+        </section>
+
+        <section id="v3" hidden aria-labelledby="t3">
+          <div class="card report-filters">
+            <div class="filter-grid">
+              <div class="field">
+                <label for="rng" data-i="range">بازه</label
+                ><select id="rng" name="range"></select>
+              </div>
+              <div class="field">
+                <label for="q" data-i="search">جستجو</label>
+                <div class="search-field">
+                  <span data-icon="search"></span
+                  ><input
+                    id="q"
+                    name="search"
+                    type="search"
+                    autocomplete="off"
+                    data-p="ph_q"
+                  />
+                </div>
+              </div>
+            </div>
+            <div id="cust" class="custom-range" hidden>
+              <fieldset class="field">
+                <legend data-i="from">از تاریخ</legend>
+                <div class="dp" id="dpFrom"></div>
+              </fieldset>
+              <fieldset class="field">
+                <legend data-i="to">تا تاریخ</legend>
+                <div class="dp" id="dpTo"></div>
+              </fieldset>
+            </div>
+          </div>
+          <div id="rep" class="card report-content"></div>
+          <div class="export-actions">
+            <button type="button" class="btn alt" id="copy" data-icon="copy">
+              <span data-i="b_copy"></span>
+            </button>
+            <button type="button" class="btn alt" id="csv" data-icon="download">
+              <span data-i="b_csv"></span>
+            </button>
+            <button type="button" class="btn alt" id="pdf" data-icon="print">
+              <span data-i="b_pdf"></span>
+            </button>
+          </div>
+        </section>
+
+        <section id="v4" class="settings-layout" hidden aria-labelledby="t4">
+          <div class="card settings-preferences">
+            <div class="panel-heading">
+              <span class="panel-symbol" data-icon="palette"></span>
+              <div>
+                <h2 data-i="appearance_heading">به رنگِ شما</h2>
+                <p data-i="appearance_note">
+                  رنگ‌هایی از سنگ، فلز و باغ‌های ایران.
+                </p>
+              </div>
+            </div>
+            <fieldset class="field">
+              <legend data-i="set_theme">ظاهر</legend>
+              <div class="themes" id="themes"></div>
+            </fieldset>
+            <div class="preference-grid">
+              <div class="field">
+                <label for="lang" data-i="lang">زبان</label
+                ><select id="lang" name="language">
+                  <option value="fa">فارسی</option>
+                  <option value="en">English</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="calsel" data-i="cal_type">نوع تقویم</label
+                ><select id="calsel" name="calendar"></select>
+              </div>
+              <div class="field">
+                <label for="unit" data-i="unit">واحد پول</label
+                ><select id="unit" name="currency"></select
+                ><label
+                  for="ucustom"
+                  id="ucustomLabel"
+                  data-i="u_custom"
+                  hidden
+                ></label
+                ><input
+                  id="ucustom"
+                  name="custom-currency"
+                  data-p="ph_unit"
+                  maxlength="80"
+                  style="display: none"
+                />
+                <p class="note" data-i="unit_note"></p>
+              </div>
+              <div class="field">
+                <label for="bud" data-i="budget">بودجهٔ ماهانه</label
+                ><input
+                  id="bud"
+                  name="budget"
+                  inputmode="decimal"
+                  autocomplete="off"
+                />
+                <p
+                  id="budError"
+                  class="field-error"
+                  aria-live="polite"
+                  hidden
+                ></p>
+              </div>
+            </div>
+          </div>
+          <div class="card settings-categories">
+            <div class="panel-heading">
+              <span class="panel-symbol" data-icon="tag"></span>
+              <div>
+                <h2 data-i="cats_h">دسته‌بندی‌ها</h2>
+                <p data-i="categories_note">هر هزینه در جای خودش.</p>
+              </div>
+            </div>
+            <div id="catlist"></div>
+            <div class="new-category">
+              <input
+                id="cname"
+                name="category-name"
+                data-p="cat_name"
+                maxlength="120"
+                aria-label="نام دسته"
+              /><input
+                id="ccol"
+                type="color"
+                value="#956b35"
+                aria-label="رنگ دسته"
+              />
+            </div>
+            <button type="button" class="btn alt" id="cadd" data-icon="plus">
+              <span data-i="cat_new"></span>
+            </button>
+          </div>
+          <div class="card settings-backup">
+            <div class="panel-heading">
+              <span class="panel-symbol" data-icon="shield"></span>
+              <div>
+                <h2 data-i="bk_h">پشتیبان‌گیری و بازیابی</h2>
+                <p data-i="backup_short">یک نسخه، برای خیال آسوده.</p>
+              </div>
+            </div>
+            <p class="note" data-i="bk_note"></p>
+            <button
+              type="button"
+              class="btn primary"
+              id="bkfile"
+              data-icon="download"
+            >
+              <span data-i="bk_file"></span>
+            </button>
+            <button type="button" class="btn alt" id="bkcopy" data-icon="copy">
+              <span data-i="bk_copy"></span>
+            </button>
+            <div class="file-picker">
+              <span data-icon="upload"></span
+              ><label for="bkinput" data-i="bk_open">انتخاب فایل پشتیبان</label
+              ><input
+                id="bkinput"
+                name="backup-file"
+                type="file"
+                accept="application/json,.json"
+              />
+            </div>
+            <details class="backup-text">
+              <summary data-i="bk_text_option">بازیابی از متن پشتیبان</summary>
+              <label for="bk" data-i="bk_label"></label
+              ><textarea
+                id="bk"
+                name="backup-text"
+                spellcheck="false"
+                autocomplete="off"
+              ></textarea>
+            </details>
+            <label class="check"
+              ><input id="restoreSettings" type="checkbox" checked /><span
+                data-i="bk_settings"
+              ></span
+            ></label>
+            <button
+              type="button"
+              class="btn alt"
+              id="bkrest"
+              data-icon="reload"
+            >
+              <span data-i="bk_rest"></span>
+            </button>
+            <p
+              class="note feedback"
+              id="bkmsg"
+              role="status"
+              aria-live="polite"
+            ></p>
+            <button
+              type="button"
+              class="btn alt"
+              id="recovery"
+              data-icon="download"
+              hidden
+            >
+              <span data-i="recovery_file"></span>
+            </button>
+            <div class="storage-tools">
+              <button
+                type="button"
+                class="btn quiet"
+                id="persist"
+                data-icon="shield"
+              >
+                <span data-i="persist"></span>
+              </button>
+              <p
+                class="note"
+                id="persistmsg"
+                role="status"
+                aria-live="polite"
+              ></p>
+              <p
+                class="note"
+                id="offlinemsg"
+                role="status"
+                aria-live="polite"
+              ></p>
+            </div>
+          </div>
+          <div class="card danger-card">
+            <div class="panel-heading">
+              <span class="panel-symbol" data-icon="settings"></span>
+              <div>
+                <h2 data-i="w_h">پاک‌سازی</h2>
+                <p class="note" data-i="w_note"></p>
+              </div>
+            </div>
+            <div class="cleanup-actions">
+              <button
+                type="button"
+                class="btn alt"
+                id="wReload"
+                data-icon="reload"
+              >
+                <span data-i="w_reload"></span>
+              </button>
+              <button
+                type="button"
+                class="btn del"
+                id="wSet"
+                data-icon="settings"
+              >
+                <span data-i="w_set"></span>
+              </button>
+              <button
+                type="button"
+                class="btn del"
+                id="wItems"
+                data-icon="trash"
+              >
+                <span data-i="w_items"></span>
+              </button>
+              <button type="button" class="btn del" id="wAll" data-icon="trash">
+                <span data-i="w_all"></span>
+              </button>
+            </div>
+            <p
+              class="note feedback"
+              id="wmsg"
+              role="status"
+              aria-live="polite"
+            ></p>
+          </div>
+        </section>
+        <footer class="workspace-footer">
+          <span lang="en" translate="no">DANG</span
+          ><span data-i="footer_note">دفترِ شما، روی دستگاهِ شما.</span>
+          <a
+            class="author-link"
+            href="https://github.com/AryanGh-imp"
+            target="_blank"
+            rel="me noopener noreferrer"
+            lang="en"
+            dir="ltr"
+            translate="no"
+            aria-label="AryanGh-imp on GitHub"
+            >GitHub: AryanGh-imp <span aria-hidden="true">↗</span></a
+          >
+        </footer>
+      </main>
+    </div>
+
+    <div
+      class="md"
+      id="md"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="editTitle"
+      hidden
+    >
+      <div class="sheet">
+        <div class="panel-heading">
+          <span class="panel-symbol" data-icon="edit"></span>
+          <h2 id="editTitle" data-i="edit_h">ویرایش هزینه</h2>
+          <button
+            type="button"
+            id="editClose"
+            class="icon-button"
+            data-icon="close"
+            aria-label="بستن"
+          ></button>
+        </div>
+        <div class="field">
+          <label for="eamt" data-i="amount">مبلغ</label
+          ><input
+            id="eamt"
+            name="edit-amount"
+            inputmode="decimal"
+            autocomplete="off"
+            aria-describedby="eamtError"
+          />
+          <p id="eamtError" class="field-error" aria-live="polite" hidden></p>
+        </div>
+        <div class="field">
+          <label for="edesc" data-i="desc">توضیح</label
+          ><input
+            id="edesc"
+            name="edit-description"
+            maxlength="10000"
+            autocomplete="off"
+          />
+        </div>
+        <div class="field">
+          <label for="ecat" data-i="cat">دسته</label
+          ><select id="ecat" name="edit-category"></select>
+        </div>
+        <fieldset class="field">
+          <legend data-i="date">تاریخ</legend>
+          <div class="dp" id="dpEdit"></div>
+        </fieldset>
+        <button type="button" class="btn primary" id="esave" data-icon="check">
+          <span data-i="save"></span>
+        </button>
+        <div class="edit-secondary">
+          <button type="button" class="btn alt" id="ecancel">
+            <span data-i="cancel"></span></button
+          ><button type="button" class="btn del" id="edel" data-icon="trash">
+            <span data-i="del"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>
