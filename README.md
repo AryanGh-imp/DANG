@@ -4,6 +4,8 @@
 
 # DANG — Personal Expense Ledger
 
+**First release: 1.0.0** · Git tag: `v1.0.0`
+
 A private, offline-first expense tracker that runs entirely in your browser. DANG combines Persian and English interfaces, Jalali and Gregorian calendars, reliable local storage, and a visual identity inspired by ancient Persian engraving, stone, and bronze.
 
 **English** · [فارسی](README.fa.md)

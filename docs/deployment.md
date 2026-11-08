@@ -4,6 +4,8 @@
 
 Repository: [AryanGh-imp/DANG](https://github.com/AryanGh-imp/DANG). Maintainer: [AryanGh-imp](https://github.com/AryanGh-imp). Expected site URL: `https://aryangh-imp.github.io/DANG/`.
 
+The first release is **1.0.0**, identified by the annotated Git tag `v1.0.0`. Release numbering is separate from the preserved internal storage and backup format versions.
+
 The project is prepared locally; a prepared checkout is not evidence of a successful hosted deployment. The first publication requires a reviewed push and GitHub Actions execution.
 
 Before the first deployment:
@@ -28,6 +30,8 @@ git status --short
 ```
 
 When the maintainer is ready to publish, run `git push -u origin main`. This command is an explicit publication step; preparing documentation or committing locally does not perform it.
+
+Publish the reviewed release tag separately with `git push origin v1.0.0`. The tag records the release commit; the Pages workflow deploys `main` rather than tag pushes.
 
 ## Workflow structure
 

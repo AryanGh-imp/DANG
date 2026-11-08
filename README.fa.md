@@ -4,6 +4,8 @@
 
 # DANG — دفتر هزینه‌ها
 
+**اولین نسخهٔ پروژه: 1.0.0** · تگ Git: `v1.0.0`
+
 [English README](README.md) · سازنده: [AryanGh-imp](https://github.com/AryanGh-imp) · [مخزن DANG](https://github.com/AryanGh-imp/DANG)
 
 برنامهٔ استاتیک برای هزینه‌های شخصی، با رابط فارسی/انگلیسی و تقویم شمسی/میلادی.

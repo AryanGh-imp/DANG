@@ -32,6 +32,8 @@ flowchart LR
 
 The database name is `dang-expenses-v3:` followed by the application directory path. The database has version 1 and an object store named `data`. Its `state` record contains `{ v, rev, settings, items }`; the optional `recovery` record retains original migration or repair data. The record format version, database version, package version, and service-worker cache version serve different purposes.
 
+The application's first release is 1.0.0. The existing `v3` database namespace and backup format are compatibility identifiers retained to keep previously stored expenses available; they are not previous public application releases.
+
 Every write reads the latest record inside an IndexedDB `readwrite` transaction, applies a synchronous operation, validates the result, increments the revision, and writes it back. IndexedDB serializes these transactions across tabs. Failed validation or writes abort the transaction; the UI does not report a successful save or clear its input on failure.
 
 The application captures the expense being edited and compares it with the current stored expense before applying an edit. A conflicting edit reports a conflict rather than silently replacing the other tab's change. BroadcastChannel notifications, and synchronization when views become active, update local UI state. Transaction correctness does not rely on BroadcastChannel availability.

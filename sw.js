@@ -1,4 +1,4 @@
-const VERSION = 'dang-v4-20261108-3';
+const VERSION = 'dang-v1.0.0-20261108-1';
 const ROOT = new URL('./', self.location.href);
 // Include the repository path: other Pages projects on this origin have their own caches.
 const PREFIX = 'dang-app:' + ROOT.pathname + ':';

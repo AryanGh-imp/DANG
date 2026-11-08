@@ -2,7 +2,9 @@
 
 Release versions describe application changes; database format and service-worker cache versions are maintained separately.
 
-## 4.0.0 — 2026-11-08
+## 1.0.0 — 2026-11-08
+
+Initial project release.
 
 ### Interface and identity
 
