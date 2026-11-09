@@ -18,7 +18,7 @@ Install dependencies with `npm ci`. Run the application using `npm run serve`, t
 | `npm run check` | Validate JavaScript syntax, local references, release files, manifest icons, cache entries and sample backup |
 | `npm test` | Run store and validation tests with fake IndexedDB |
 | `npm run test:e2e` | Run Chromium behavior, design and Pages-path tests |
-| `npm run test:webkit` | Run design tests in WebKit |
+| `npm run test:webkit` | Run design and language behavior tests in WebKit |
 | `npm run build:pages` | Validate and assemble the allowlisted static release in `dist/` |
 | `npm run serve:pages` | Serve the assembled `dist/` artifact, default port 4173 |
 | `npm run test:pages` | Assemble and test the release artifact on port 4174 |
@@ -39,6 +39,8 @@ Linux CI installs browser system libraries with `--with-deps`. The Chromium conf
 Tests create independent browser contexts and synthetic expenses. Do not seed demonstration data into a browser profile containing personal expenses. The screenshot test refreshes `docs/previews/` intentionally; review those changes before committing them. Reports and screenshots under `test-results*/` and `playwright-report/` are ignored.
 
 Coverage includes transaction rollback, stale tabs and edit conflicts, malformed backups, migration recovery, search normalization, CSV safety, report calculations, date boundaries, escaped print output, offline reloads, theme contrast, mobile target sizing, history navigation, and long content. The artifact suite also checks that repository metadata and example backups are not deployed.
+
+The language suite uses fresh English, Persian and unsupported-language contexts to verify initial language/calendar selection. Chromium and WebKit also exercise keyboard access to the header switch, preservation of expense drafts and leap-day dates, offline preference persistence, Settings synchronization, saved legacy preferences and failed language writes. The default browser-test locale is explicitly Persian so existing behavior checks remain independent of the host's language.
 
 ## Repository structure
 

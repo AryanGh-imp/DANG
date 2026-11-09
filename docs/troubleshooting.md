@@ -12,6 +12,10 @@ Check the browser profile, hostname, protocol, and application directory. Indexe
 
 DANG retains input when a write fails. Browser quota limits, disabled storage, or another tab holding a database upgrade can prevent a write. Export existing data if possible, check storage settings, and retry after resolving the condition. A concurrent edit conflict means the original expense changed in another tab; reopen the latest expense before editing again.
 
+## The interface opens in an unfamiliar language
+
+Use the globe button in the page header: **English** switches to English and **فارسی** switches to Persian. It is available in every view, including on phones. The saved choice overrides browser language detection on future visits. Language changes keep your current calendar; use Settings if you also want to change the calendar.
+
 ## A backup is rejected
 
 Use a JSON backup, not a CSV, print report, or arbitrary recovery file. Check numeric amounts, valid ISO dates, supported settings, safe category keys, and six-digit hex colors. The file picker rejects files larger than 20,000,000 bytes. See [backup format](data-format.md). Invalid imports do not partially change existing data.

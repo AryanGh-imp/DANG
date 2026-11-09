@@ -20,6 +20,7 @@ CSS custom properties in `assets/css/styles.css` define surfaces, text, borders,
 
 - Desktop: a sidebar and separate areas for entry and the selected day's expenses.
 - Tablet and mobile: fixed bottom navigation, safe-area spacing, and stacked panels on narrow screens.
+- Every view exposes a globe language button in the header, labeled in the target language (**English** or **فارسی**). It has a 44-pixel touch target and stacks above the date control on narrow screens, so changing language never requires reading the Settings navigation first.
 - Amount, category, and date are the primary entry fields. The form supports Enter, inline errors, and retaining drafts after failed writes.
 - Editing uses a centered desktop dialog and a mobile bottom sheet. Focus is trapped inside, Escape closes it, and closing restores focus to the expense.
 - Categories and themes have labels and selected states in addition to color. Calendar intensity is limited to preserve text contrast.

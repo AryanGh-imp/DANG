@@ -25,6 +25,9 @@ The configured deployment target is **[GitHub Pages](https://aryangh-imp.github.
 - Work offline after the application has prepared its cache. No account, backend, analytics, or runtime CDN is required.
 - Use six coordinated light/dark themes or follow the device's appearance preference.
 - Use a desktop sidebar or mobile bottom navigation, with RTL/LTR layouts, visible keyboard focus, and safe-area spacing.
+- Start in your browser's first supported language (Persian or English), with English as the fallback. Switch at any time using the visible **English / فارسی** header button; your saved choice takes precedence on future visits.
+
+New profiles pair Persian with the Jalali calendar and English with Gregorian. Changing the interface language keeps your selected calendar, expenses, and current expense draft.
 
 Currency choices are labels, not exchange-rate conversions. Expenses remain on the current browser, origin, and application path; devices do not synchronize automatically.
 
@@ -38,7 +41,7 @@ Screenshots use synthetic data in isolated test browsers.
   <img src="docs/previews/mobile.png" width="300" alt="Mobile preview">
 </p>
 
-[Dark theme](docs/previews/imperial-dark.png) · [Report view](docs/previews/report.png)
+[Dark theme](docs/previews/imperial-dark.png) · [Report view](docs/previews/report.png) · [English first visit](docs/previews/english-mobile.png)
 
 ## Run locally
 

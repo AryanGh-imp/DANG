@@ -10,6 +10,7 @@ DANG is a static application built with HTML, CSS, and browser-native JavaScript
 | `app.js` | View state, date adapters, rendering, user actions, reports, exports, focus and synchronization |
 | `store.js` | Validation, normalizing legacy data, backup merges, IndexedDB transactions |
 | `i18n.js` | Persian/English labels, calendar month names and weekday labels |
+| `locale.js` | First-visit language and calendar preferences from supported browser languages |
 | `themes.js` | Theme definitions, system appearance selection, legacy aliases |
 | `icons.js` | Inline SVG symbols for UI controls |
 | `assets/css/styles.css` | Theme tokens, responsive layout, accessibility and printing |
@@ -43,6 +44,12 @@ The application captures the expense being edited and compares it with the curre
 At startup, the app reads the historical `expenses-v1` and `expenses-settings-v1` localStorage keys. The initial database record normalizes valid data and retains originals for recovery. Existing migrated records are not imported again on every launch. Invalid stored records can be repaired at startup while preserving the original record in recovery storage.
 
 The browser's storage is scoped by origin as well as path. Changing from localhost to Pages, changing hostname, or changing application path creates a separate storage context. A JSON backup is the supported transfer mechanism.
+
+## Language preferences
+
+On first visit, `locale.js` selects the first Persian or English entry in `navigator.languages` (using `navigator.language` when the list is unavailable). Unsupported language lists fall back to English. A new Persian profile starts with Jalali; a new English profile starts with Gregorian.
+
+These preferences only seed database creation. Saved IndexedDB settings and valid legacy language/calendar choices take precedence. Legacy profiles without a calendar choice retain the original Jalali default. The global header control and Settings selector update the same language setting through the existing transaction flow. Switching preserves the current view, selected calendar, expense dates and expense draft; a failed write keeps the current language.
 
 ## Views and navigation
 

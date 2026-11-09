@@ -13,6 +13,7 @@ Initial project release.
 - Replaced the previous brand icon with derivatives of the maintainer-supplied warrior engraving.
 - Added visible GitHub maintainer credit and Pages sharing metadata.
 - Improved forms, errors, dialogs, keyboard focus, RTL/LTR, touch spacing and long-content layouts.
+- Added first-visit browser language detection with an English fallback and a global English / فارسی header switch that preserves saved preferences and expense drafts.
 
 ### Data and offline behavior
 
