@@ -60,7 +60,13 @@ Open `http://127.0.0.1:4173/DANG/`. Stop another server using 4173 first, or set
 
 ## Updates and cache versions
 
-Before releasing changes to HTML, CSS, JavaScript, fonts, icons, or the manifest, change the unique `VERSION` in `sw.js`. The worker installs only when all precache entries are available. It then removes the old cache for the same path. An already open page retains its loaded code; reload after installation to use the new release.
+`npm run build:pages` hashes the names and bytes of the allowlisted published files and stamps `dist/sw.js` with `dang-v<application-version>-<content-hash>`. The application version comes from `package.json`. Identical published content produces the same identity; a runtime change creates a different identity even if the application version has not changed. Source files are not rewritten. Documentation and preview changes are excluded from the fingerprint.
+
+For a future release, update application version/changelog as appropriate, make and verify the change, commit it, and push `main`. The workflow builds and deploys the new fingerprint automatically. Add new runtime modules to the release allowlist and precache list. When serving source files directly during development, also change the source `VERSION` in `sw.js` to test cached updates.
+
+The app checks for updates at startup, after reconnecting, on focus/visibility changes, and every five minutes while visible. A complete new worker waits and presents an **Update app** button. The user selects it to activate the downloaded release and reload the requesting tab without a hard refresh. Saved expenses and settings remain in IndexedDB. Unfinished input, an open editor or an in-flight save postpones reloading; another open tab keeps its draft and gets its own notice. A downloaded update can be applied offline.
+
+Precache requests bypass the HTTP cache. If any release asset is unavailable, the previous offline version stays active. Successful activation removes only caches for this application path. Browser checks run while the app is open and online; a closed app discovers changes on its next visit. An older release without the update UI needs one ordinary reload after the new worker is installed to begin using these controls.
 
 Keep relative application asset paths and manifest `scope`, `id`, and `start_url`. GitHub's path is case-sensitive: `/DANG/` is the production directory. Changing a domain or path creates a different IndexedDB context; export/import a backup to move data.
 
@@ -68,7 +74,7 @@ The canonical URL and sharing image in `index.html` target the Pages URL above. 
 
 ## Rollback
 
-Revert the faulty source commit on `main`, use a new service-worker version even when restoring older code, and publish the revert through the same CI gate. Reusing an old cache version can prevent clients from receiving the rollback. Preserve backup compatibility and test changes involving stored records before publication.
+Revert the faulty source commit on `main` and publish the revert through the same CI gate. The build fingerprint changes with the reverted content; keep the current update controller/build tooling when reverting a feature. For direct source deployments, give the worker a new source version. Preserve backup compatibility and test changes involving stored records before publication.
 
 ## Repository presentation
 

@@ -14,6 +14,7 @@ Initial project release.
 - Added visible GitHub maintainer credit and Pages sharing metadata.
 - Improved forms, errors, dialogs, keyboard focus, RTL/LTR, touch spacing and long-content layouts.
 - Added first-visit browser language detection with an English fallback and a global English / فارسی header switch that preserves saved preferences and expense drafts.
+- Added separate English/Gregorian and Persian/Jalali preview sets with real phone viewport captures and bottom-positioned navigation.
 
 ### Data and offline behavior
 
@@ -21,12 +22,14 @@ Initial project release.
 - Preserved failed-write drafts, validated backup merges and stable repeated imports.
 - Corrected report ranges and averages, escaped printing content and neutralized CSV formulas.
 - Added path-scoped, versioned offline caching of application modules, fonts and icons.
+- Added background release detection, a one-button update notice, complete-download activation and draft protection across tabs.
 
 ### Repository and release preparation
 
 - Added English technical documentation and a separate Persian README.
 - Added MIT source/documentation licensing, font and artwork notices, contribution guidance and security reporting instructions.
 - Added a validated static release allowlist and production-artifact browser checks.
+- Added deterministic cache fingerprints from published content so future feature deployments invalidate cached releases automatically.
 - Added reusable CI with Chromium/WebKit checks and a gated GitHub Pages workflow.
 - Aligned development and CI with Node.js 26 LTS using `.nvmrc` as the shared version selector.
 - Organized the initial source history into meaningful module and documentation commits.

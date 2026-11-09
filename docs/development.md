@@ -16,9 +16,9 @@ Install dependencies with `npm ci`. Run the application using `npm run serve`, t
 | `npm ci` | Install the locked development dependency tree |
 | `npm run serve` | Serve source files on localhost, default port 4173 |
 | `npm run check` | Validate JavaScript syntax, local references, release files, manifest icons, cache entries and sample backup |
-| `npm test` | Run store and validation tests with fake IndexedDB |
+| `npm test` | Run storage, validation and release fingerprint tests |
 | `npm run test:e2e` | Run Chromium behavior, design and Pages-path tests |
-| `npm run test:webkit` | Run design and language behavior tests in WebKit |
+| `npm run test:webkit` | Run design, language and update behavior tests in WebKit |
 | `npm run build:pages` | Validate and assemble the allowlisted static release in `dist/` |
 | `npm run serve:pages` | Serve the assembled `dist/` artifact, default port 4173 |
 | `npm run test:pages` | Assemble and test the release artifact on port 4174 |
@@ -42,6 +42,10 @@ Coverage includes transaction rollback, stale tabs and edit conflicts, malformed
 
 The language suite uses fresh English, Persian and unsupported-language contexts to verify initial language/calendar selection. Chromium and WebKit also exercise keyboard access to the header switch, preservation of expense drafts and leap-day dates, offline preference persistence, Settings synchronization, saved legacy preferences and failed language writes. The default browser-test locale is explicitly Persian so existing behavior checks remain independent of the host's language.
 
+The update suite serves two isolated releases with long-lived HTTP-cache headers. It verifies the update banner, complete precaching, one-button activation, saved data, draft protection in requesting/other tabs and during delayed activation, offline activation, cache isolation and recovery from a missing release asset. Release fingerprint checks prove that runtime changes invalidate the cache without depending on a manual version edit.
+
+Preview capture creates `docs/previews/en/` with English/Gregorian data and `docs/previews/fa/` with Persian/Jalali data, including translated descriptions and localized currency labels. Mobile captures use a 390 × 844 viewport with `fullPage: false`; the main phone preview shows the calendar and asserts that fixed navigation remains at the bottom. Desktop, dark and report captures may include the full document. Review each language set visually after regenerating it.
+
 ## Repository structure
 
 ```text
@@ -63,7 +67,9 @@ README.fa.md              Persian README
 
 Keep runtime imports and asset paths relative so the app works under a repository subpath. Maintain Persian and English UI strings together. Preserve current and legacy data formats unless a documented migration is implemented. Use existing CSS custom properties and theme definitions for appearance changes.
 
-Use `.editorconfig` for UTF-8 and LF conventions; `.gitattributes` keeps binary assets intact. Update `sw.js` whenever cached runtime files change. Add verification that exercises user behavior or a material failure mode, and review screenshots for visual changes.
+Use `.editorconfig` for UTF-8 and LF conventions; `.gitattributes` keeps binary assets intact. The Pages build fingerprints cached runtime changes automatically. Update the source `sw.js` version when testing updates through the source server, and keep both release and precache lists in sync when adding modules. Add verification that exercises user behavior or a material failure mode, and review screenshots for visual changes.
+
+`npm run check` rejects a published JavaScript module that is missing from the worker precache, so a new feature module cannot silently break offline imports.
 
 ## Regenerate brand assets
 

@@ -33,15 +33,15 @@ Currency choices are labels, not exchange-rate conversions. Expenses remain on t
 
 ## Preview
 
-Screenshots use synthetic data in isolated test browsers.
+Screenshots use an English interface, Gregorian dates and synthetic data in isolated test browsers. Phone previews capture a real 390 × 844 viewport, with navigation at the bottom.
 
-![Desktop preview](docs/previews/desktop.png)
+![English desktop preview with Gregorian dates](docs/previews/en/desktop.png)
 
 <p align="center">
-  <img src="docs/previews/mobile.png" width="300" alt="Mobile preview">
+  <img src="docs/previews/en/mobile.png" width="300" alt="English phone calendar with Gregorian dates">
 </p>
 
-[Dark theme](docs/previews/imperial-dark.png) · [Report view](docs/previews/report.png) · [English first visit](docs/previews/english-mobile.png)
+[Dark theme](docs/previews/en/imperial-dark.png) · [Report view](docs/previews/en/report.png) · [Mobile entry](docs/previews/en/mobile-entry.png)
 
 ## Run locally
 
@@ -81,6 +81,10 @@ The build copies an explicit set of application files into `dist/`; it does not 
 The Pages workflow validates the application, runs Chromium and WebKit checks, tests the assembled release, and uploads only `dist/`. Deployment requires all checks to succeed.
 
 Before the first deployment, select **Settings → Pages → Build and deployment → Source: GitHub Actions**. A push to `main`, or a manual Pages workflow run on `main`, then deploys the site. See the [deployment guide](docs/deployment.md) for the first-push checklist, workflow permissions, update behavior, and rollback instructions.
+
+## Updates
+
+The app checks for new versions on startup, when returning online or to the page, and every five minutes while visible. Once the complete update is cached, an **Update app** button appears. Updating reloads the app while keeping saved expenses and settings. Unfinished input or an open editor postpones the reload; other tabs keep their drafts. Pages builds automatically fingerprint published files, so future feature changes receive a fresh cache without requiring a hard refresh.
 
 ## Data and privacy
 

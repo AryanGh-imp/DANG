@@ -21,6 +21,7 @@ CSS custom properties in `assets/css/styles.css` define surfaces, text, borders,
 - Desktop: a sidebar and separate areas for entry and the selected day's expenses.
 - Tablet and mobile: fixed bottom navigation, safe-area spacing, and stacked panels on narrow screens.
 - Every view exposes a globe language button in the header, labeled in the target language (**English** or **فارسی**). It has a 44-pixel touch target and stacks above the date control on narrow screens, so changing language never requires reading the Settings navigation first.
+- Ready updates appear in an inline status panel with a touch-sized action. Detection does not move focus or reload a draft. The requesting tab reloads after explicit activation only when its input is safe to leave.
 - Amount, category, and date are the primary entry fields. The form supports Enter, inline errors, and retaining drafts after failed writes.
 - Editing uses a centered desktop dialog and a mobile bottom sheet. Focus is trapped inside, Escape closes it, and closing restores focus to the expense.
 - Categories and themes have labels and selected states in addition to color. Calendar intensity is limited to preserve text contrast.
@@ -38,7 +39,7 @@ The automated design suite checks all seven theme choices across all four views 
 
 `assets/branding/dang-emblem.png` preserves the supplied image. The WebP derivative reduces display payload; portrait crops are used for small application icons so the lettering does not become unreadable. The maskable variant pads the artwork within a safe area. `scripts/build-brand.py` regenerates derivatives using Python and Pillow.
 
-Screenshots in `docs/previews/` are generated using synthetic data in independent browser contexts. Original artwork and font licensing are documented in [NOTICE](../NOTICE).
+Screenshots in `docs/previews/en/` use English, Gregorian dates and English sample descriptions; `docs/previews/fa/` uses Persian and Jalali dates. Phone screenshots capture a real 390 × 844 viewport so fixed navigation stays at the bottom of the image. The main mobile preview shows the calendar; entry, desktop, dark and report previews are also generated in isolated contexts. Original artwork and font licensing are documented in [NOTICE](../NOTICE).
 
 ## Applied references
 

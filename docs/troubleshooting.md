@@ -26,7 +26,9 @@ Load the app online over HTTPS or localhost and wait for the offline-ready statu
 
 ## A new design still looks like the previous release
 
-Verify that the runtime change included a new `sw.js` version. An open page keeps its loaded code while a new worker installs; reload after installation. Inspect the worker's installation errors if it cannot cache an asset. Keep expense backups before clearing any site data; changing the static cache and deleting IndexedDB are different operations.
+Reconnect or return to the page and look for **Update app**. Visible pages also check every five minutes. Save or clear unfinished input and close an editor before selecting the update button. Other tabs can update independently. A regular reload alone can still use the previous version while a downloaded worker is waiting for that action.
+
+Confirm the Pages workflow succeeded and deployed the fingerprinted `dist/` output. For direct source-server testing, change the source worker version. If no update appears, inspect worker installation errors and missing precache assets; a failed download intentionally keeps the previous offline version. Keep expense backups before clearing any site data.
 
 ## PDF or clipboard export does not complete
 

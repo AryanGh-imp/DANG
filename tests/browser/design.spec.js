@@ -16,15 +16,23 @@ const fixture = {
   ],
 };
 
-async function start(page) {
+const englishFixture = {
+  settings: { ...fixture.settings, lang: 'en', cal: 'g', unit: 'custom', ucustom: 'USD', budget: 600 },
+  items: fixture.items.map((item, index) => ({
+    ...item, amt: item.amt / 10000,
+    desc: ['Lunch on the way home', 'Daily commute', 'Books and stationery', 'Internet and phone bill', 'Weekly groceries', 'Other expenses'][index],
+  })),
+};
+
+async function start(page, sample = fixture) {
   await page.clock.setFixedTime(new Date('2026-11-08T12:00:00+03:30'));
   await page.goto('/Dang/');
   expect(await page.evaluate(async () => (await import('./app.js')).ready)).toBe(true);
   await page.locator('#t4').click();
   await page.locator('.backup-text summary').click();
-  await page.locator('#bk').fill(JSON.stringify(fixture));
+  await page.locator('#bk').fill(JSON.stringify(sample));
   await page.locator('#bkrest').click();
-  await expect(page.locator('#bkmsg')).toContainText('۶');
+  await expect(page.locator('#bkmsg')).toContainText(sample.settings.lang === 'en' ? '6' : '۶');
   await page.locator('#t1').click();
   await expect(page.locator('#today .row')).toHaveCount(3);
   await page.evaluate(() => document.fonts.ready);
@@ -49,6 +57,7 @@ async function assertLayout(page) {
 test('responsive RTL and English layouts keep all views usable', async ({ page }) => {
   test.setTimeout(90000);
   await start(page);
+  await page.locator('#updateBanner').evaluate(element => { element.hidden = false; });
   for (const [width, height] of [[1440, 1000], [1024, 768], [820, 1180], [430, 932], [390, 844], [360, 800], [320, 740], [844, 390]]) {
     await page.setViewportSize({ width, height });
     for (const view of views) {
@@ -70,6 +79,7 @@ test('responsive RTL and English layouts keep all views usable', async ({ page }
 test('all themes and expense dialog meet automated WCAG AA checks', async ({ page }) => {
   test.setTimeout(120000);
   await start(page);
+  await page.locator('#updateBanner').evaluate(element => { element.hidden = false; });
   await page.setViewportSize({ width: 390, height: 844 });
   for (const theme of themes) {
     await page.locator('#t4').click();
@@ -121,38 +131,48 @@ test('long descriptions, category names and large amounts remain readable', asyn
   }
 });
 
-test('capture branded desktop and mobile previews', async ({ page, browser, browserName }) => {
+test('capture localized desktop and phone viewport previews', async ({ page, browser, browserName }) => {
   test.skip(browserName !== 'chromium', 'Publish one consistent screenshot set');
+  test.setTimeout(90000);
   await start(page);
-  await mkdir('docs/previews', { recursive: true });
-  await expect(page.locator('#status')).toBeHidden();
-  await page.setViewportSize({ width: 1440, height: 1080 });
-  await page.evaluate(() => window.scrollTo(0, 0));
-  await page.screenshot({ path: 'docs/previews/desktop.png', fullPage: true });
-  await page.locator('.author-link').screenshot({ path: 'docs/previews/author-badge.png' });
-  await page.setViewportSize({ width: 390, height: 844 });
-  await page.evaluate(() => window.scrollTo(0, 0));
-  await page.screenshot({ path: 'docs/previews/mobile.png', fullPage: true });
-  await page.locator('#t4').click();
-  await page.locator('[data-k="obsidian"]').click();
-  await page.locator('#t1').click();
-  await page.setViewportSize({ width: 1440, height: 1080 });
-  await expect(page.locator('#status')).toBeHidden();
-  await page.evaluate(() => window.scrollTo(0, 0));
-  await page.screenshot({ path: 'docs/previews/imperial-dark.png', fullPage: true });
-  await page.locator('.author-link').screenshot({ path: 'docs/previews/author-badge-dark.png' });
-  await page.locator('#t3').click();
-  await page.evaluate(() => window.scrollTo(0, 0));
-  await page.screenshot({ path: 'docs/previews/report.png', fullPage: true });
+  async function capture(target, lang) {
+    const path = 'docs/previews/' + lang;
+    await mkdir(path, { recursive: true });
+    await expect(target.locator('html')).toHaveAttribute('lang', lang);
+    await expect(target.locator('#calsel')).toHaveValue(lang === 'en' ? 'g' : 'j');
+    await expect(target.locator('#status')).toBeHidden();
+    await target.setViewportSize({ width: 1440, height: 1080 });
+    await target.evaluate(() => window.scrollTo(0, 0));
+    await target.screenshot({ path: path + '/desktop.png', fullPage: true });
+    if (lang === 'fa') await target.locator('.author-link').screenshot({ path: 'docs/previews/author-badge.png' });
+    await target.setViewportSize({ width: 390, height: 844 });
+    await target.evaluate(() => window.scrollTo(0, 0));
+    await target.screenshot({ path: path + '/mobile-entry.png', fullPage: false });
+    await target.locator('#t2').click();
+    await target.evaluate(() => window.scrollTo(0, 0));
+    await assertLayout(target);
+    const navigation = await target.locator('#navigation').boundingBox();
+    expect(navigation.y).toBeGreaterThan(734);
+    expect(navigation.y + navigation.height).toBeLessThanOrEqual(844);
+    await target.screenshot({ path: path + '/mobile.png', fullPage: false });
+    await target.locator('#t4').click();
+    await target.locator('[data-k="obsidian"]').click();
+    await target.locator('#t1').click();
+    await target.setViewportSize({ width: 1440, height: 1080 });
+    await expect(target.locator('#status')).toBeHidden();
+    await target.evaluate(() => window.scrollTo(0, 0));
+    await target.screenshot({ path: path + '/imperial-dark.png', fullPage: true });
+    if (lang === 'fa') await target.locator('.author-link').screenshot({ path: 'docs/previews/author-badge-dark.png' });
+    await target.locator('#t3').click();
+    await target.evaluate(() => window.scrollTo(0, 0));
+    await target.screenshot({ path: path + '/report.png', fullPage: true });
+  }
+  await capture(page, 'fa');
   const englishContext = await browser.newContext({ locale: 'en-US', viewport: { width: 390, height: 844 } });
   try {
     const englishPage = await englishContext.newPage();
-    await englishPage.clock.setFixedTime(new Date('2026-11-08T12:00:00+03:30'));
-    await englishPage.goto('/Dang/');
-    expect(await englishPage.evaluate(async () => (await import('./app.js')).ready)).toBe(true);
-    await expect(englishPage.locator('#pageTitle')).toHaveText('Expense ledger');
-    await englishPage.evaluate(() => document.fonts.ready);
-    await englishPage.screenshot({ path: 'docs/previews/english-mobile.png', fullPage: true });
+    await start(englishPage, englishFixture);
+    await capture(englishPage, 'en');
   } finally {
     await englishContext.close();
   }

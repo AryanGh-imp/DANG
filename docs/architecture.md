@@ -11,6 +11,7 @@ DANG is a static application built with HTML, CSS, and browser-native JavaScript
 | `store.js` | Validation, normalizing legacy data, backup merges, IndexedDB transactions |
 | `i18n.js` | Persian/English labels, calendar month names and weekday labels |
 | `locale.js` | First-visit language and calendar preferences from supported browser languages |
+| `updates.js` | Background release checks, waiting-worker activation and consented reloads |
 | `themes.js` | Theme definitions, system appearance selection, legacy aliases |
 | `icons.js` | Inline SVG symbols for UI controls |
 | `assets/css/styles.css` | Theme tokens, responsive layout, accessibility and printing |
@@ -59,9 +60,13 @@ Reports use integer cents for summation. Daily averages use all calendar days in
 
 ## Offline behavior
 
-The worker derives its scope from its own URL and prefixes cache names with the application path. Installation precaches every listed asset and activates only after that set is cached. Fetch handling serves the installed version as a unit and ignores other projects' paths and external requests.
+The worker derives its scope from its own URL and prefixes cache names with the application path. Installation precaches every listed asset with `cache: 'reload'`, bypassing stale HTTP-cache copies. Fetch handling serves the installed version as a unit and ignores other projects' paths and external requests. A failed precache cannot replace the working version.
 
-Activation removes previous caches belonging to the same app path and claims clients. Already loaded pages retain their JavaScript; a subsequent reload uses the newly installed version. Expense data lives separately in IndexedDB. Changes to runtime assets require a new `VERSION` in `sw.js`; see [deployment](deployment.md).
+An initial worker activates normally. Later workers wait until a user selects Update app. `updates.js` registers with `updateViaCache: 'none'` and checks at startup, online events, focus/visibility changes and five-minute intervals while visible; focus checks are throttled to once per minute. The update banner remains available in every view without moving focus.
+
+Activation removes previous caches belonging to the same app path and claims clients. The requesting tab reloads once after its controller changes and activation completes. Other tabs retain loaded code and receive their own update notice. The app checks for pending writes, expense/backup/category/settings input and an open editor both before activation and before reloading. Unfinished work postpones the reload. A fully cached update can also be applied offline.
+
+Expense data lives separately in IndexedDB. `scripts/release-version.js` fingerprints the allowlisted source bytes and application version. The Pages build stamps this deterministic identity into the copied `dist/sw.js`, leaving source files untouched. Published runtime changes receive a new cache identity automatically; documentation-only changes keep it. Direct source-server development still uses the editable `VERSION` in `sw.js`. See [deployment](deployment.md).
 
 ## Export boundary
 

@@ -9,7 +9,7 @@ Contributions should preserve DANG's static hosting model, offline operation, lo
 3. Make one coherent change, keeping runtime paths relative and translations consistent.
 4. Run appropriate checks. Changes involving storage, imports, reports, or offline behavior should exercise failure paths as well as successful behavior.
 5. For appearance changes, review narrow mobile and desktop layouts, keyboard focus, RTL/LTR and contrast. Screenshots must use synthetic data.
-6. Update affected documentation and the worker version when cached runtime files change.
+6. Update affected documentation, keep the release/precache lists in sync, and change the source worker version for source-server update tests. Pages builds fingerprint published runtime changes automatically.
 7. Open a pull request explaining the concrete problem, resulting behavior, and verification performed.
 
 The complete command list is in [development](docs/development.md). Before a release, run `npm run check`, `npm test`, `npm run test:e2e`, `npm run test:webkit`, and `npm run test:pages`.
