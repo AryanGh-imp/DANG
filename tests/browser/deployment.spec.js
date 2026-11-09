@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { readFile } from 'node:fs/promises';
 
 test('exact GitHub Pages subpath loads branding, profile and cached expenses', async ({ page, context }) => {
   await page.goto('/DANG/');
@@ -30,4 +31,7 @@ test('release artifact excludes repository metadata, dependencies and backup exa
   for (const path of ['LICENSE', 'NOTICE', 'assets/fonts/OFL-Vazirmatn.txt', 'manifest.webmanifest']) {
     expect((await request.get('/DANG/' + path)).status()).toBe(200);
   }
+  const worker = await (await request.get('/DANG/sw.js')).text();
+  const { version } = JSON.parse(await readFile(new URL('../../package.json', import.meta.url), 'utf8'));
+  expect(worker.match(/const VERSION = 'dang-v(.+)-([a-f0-9]{16})';/)?.[1]).toBe(version);
 });

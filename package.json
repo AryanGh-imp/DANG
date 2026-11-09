@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test tests/store.test.js",
+    "test": "node --test tests/store.test.js tests/release.test.js",
     "test:e2e": "playwright test",
     "serve": "node scripts/serve.js",
     "check": "node scripts/check.js",

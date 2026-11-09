@@ -44,7 +44,13 @@ export async function checkSite() {
   const worker = await read('sw.js');
   const cached = worker.match(/const FILES = \[([\s\S]*?)\];/);
   assert(cached, 'Cannot read service worker precache list');
-  for (const match of cached[1].matchAll(/['"]([^'"]+)['"]/g)) await localReference('sw.js', match[1], true);
+  const precached = new Set();
+  for (const match of cached[1].matchAll(/['"]([^'"]+)['"]/g)) {
+    await localReference('sw.js', match[1], true); precached.add(match[1]);
+  }
+  for (const file of files.filter(file => file.endsWith('.js') && file !== 'sw.js')) {
+    assert(precached.has(file), 'Runtime module missing from offline precache: ' + file);
+  }
   const docs = ['README.md', 'README.fa.md', 'CONTRIBUTING.md', 'SECURITY.md', 'CHANGELOG.md',
     ...(await readdir(resolve(root, 'docs'))).filter(file => file.endsWith('.md')).map(file => 'docs/' + file)];
   for (const file of docs) {
