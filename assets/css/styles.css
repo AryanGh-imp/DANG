@@ -413,6 +413,45 @@ a {
   margin-top: 4px;
   text-wrap: pretty;
 }
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: none;
+}
+.language-switch {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 44px;
+  min-width: 44px;
+  padding: 9px 12px;
+  border: 1px solid var(--control-line);
+  border-radius: 12px;
+  background: var(--card);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 600;
+}
+.language-switch .ui-icon {
+  width: 18px;
+  height: 18px;
+}
+@media (max-width: 620px) {
+  .header-actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 6px;
+  }
+  .language-switch {
+    padding-inline: 9px;
+  }
+  .header-actions .date-chip {
+    margin-bottom: 0;
+    justify-content: center;
+  }
+}
 .mobile-brand {
   display: none;
 }

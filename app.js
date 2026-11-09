@@ -1,6 +1,7 @@
 import { T, MN, WD, MG, WG } from './i18n.js';
 import { icon } from './icons.js';
 import { THEMES, themeKey, activeTheme } from './themes.js';
+import { browserPreferences } from './locale.js';
 import { ExpenseStore, defaultSettings, normaliseSettings, normaliseItems, validateBackup,
   mergeBackup, sameExpense, parseAmount, toLatin, sumAmounts, normaliseSearch, uid } from './store.js';
 
@@ -116,7 +117,8 @@ Object.assign(T.en, {
 });
 
 const $ = id => document.getElementById(id);
-let items = [], S = defaultSettings(), cur = 1, curCat = 'food', editId = null, editBase = null;
+const initialPreferences = browserPreferences(navigator.languages?.length ? navigator.languages : [navigator.language]);
+let items = [], S = { ...defaultSettings(), ...initialPreferences }, cur = 1, curCat = 'food', editId = null, editBase = null;
 let returnFocus = null, appliedRevision = -1, recoveryData = null, channel = null;
 let offlineKey = 'offline_loading';
 let backupDraft = false, statusTimer;
@@ -392,6 +394,13 @@ function renderThemes() {
 function ucShow() { $('ucustom').style.display = S.unit === 'custom' ? 'block' : 'none'; $('ucustomLabel').hidden = S.unit !== 'custom'; $('ucustom').value = S.ucustom; }
 function applyLang() {
   document.documentElement.lang = S.lang; document.documentElement.dir = rtl() ? 'rtl' : 'ltr';
+  const targetLanguage = rtl() ? 'en' : 'fa';
+  $('languageLabel').textContent = targetLanguage === 'en' ? 'English' : 'فارسی';
+  $('languageLabel').lang = targetLanguage;
+  $('languageSwitch').lang = targetLanguage;
+  const switchLabel = targetLanguage === 'en' ? 'Switch to English' : 'تغییر زبان به فارسی';
+  $('languageSwitch').setAttribute('aria-label', switchLabel);
+  $('languageSwitch').title = switchLabel;
   document.querySelectorAll('[data-i]').forEach(el => { el.textContent = t(el.dataset.i); });
   document.querySelectorAll('[data-p]').forEach(el => { el.placeholder = t(el.dataset.p); });
   $('unit').innerHTML = ['none', 'toman', 'rial', 'custom'].map(k => '<option value="' + k + '">' + t('u_' + k) + '</option>').join(''); $('unit').value = S.unit; ucShow();
@@ -542,6 +551,10 @@ asyncButton('csv', async () => { if (report.csv) deliver('expenses.csv', '\uFEFF
 asyncButton('pdf', async () => { if (preparePrint()) await $('printNow').onclick(); });
 for (let i = 1; i <= 4; i++) { $('t' + i).onclick = () => tab(i); $('t' + i).setAttribute('aria-controls', 'v' + i); }
 $('goCalendar').onclick = () => { tab(2); $('cprev').focus(); };
+asyncButton('languageSwitch', async () => {
+  const lang = S.lang === 'fa' ? 'en' : 'fa';
+  await commit(state => { state.settings.lang = lang; });
+});
 window.addEventListener('popstate', () => { const n = viewNames.indexOf(new URL(location.href).searchParams.get('view')) + 1; tab(n || 1, false); });
 
 function readLegacy() {
@@ -556,6 +569,12 @@ dpReset(); applyTheme(); applyLang(); tab(viewNames.indexOf(new URL(location.hre
 document.body.setAttribute('aria-busy', 'true');
 export const ready = (async () => {
   const legacy = readLegacy();
+  // Seed a fresh database without replacing an existing or migrated language choice.
+  legacy.settings = {
+    ...legacy.settings,
+    lang: ['fa', 'en'].includes(legacy.settings?.lang) ? legacy.settings.lang : initialPreferences.lang,
+    cal: ['j', 'g'].includes(legacy.settings?.cal) ? legacy.settings.cal : legacy.raw ? 'j' : initialPreferences.cal,
+  };
   try {
     const result = await store.open(legacy); adopt(result.state); if (cur === 4 && !backupDraft) bkFill();
     recoveryData = await store.read('recovery'); $('recovery').hidden = !recoveryData;

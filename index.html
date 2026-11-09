@@ -111,14 +111,27 @@
               هزینه‌های روزانه‌ات را با خیال آسوده ثبت کن.
             </p>
           </div>
-          <button
-            id="goCalendar"
-            class="date-chip"
-            type="button"
-            data-icon="calendar"
-          >
-            <span id="headerDate"></span>
-          </button>
+          <div class="header-actions">
+            <button
+              type="button"
+              id="languageSwitch"
+              class="language-switch"
+              lang="en"
+              data-icon="globe"
+              aria-label="Switch to English"
+              title="Switch to English"
+            >
+              <span id="languageLabel" lang="en" translate="no">English</span>
+            </button>
+            <button
+              id="goCalendar"
+              class="date-chip"
+              type="button"
+              data-icon="calendar"
+            >
+              <span id="headerDate"></span>
+            </button>
+          </div>
         </header>
         <div
           id="status"

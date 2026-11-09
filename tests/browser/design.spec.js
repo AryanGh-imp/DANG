@@ -121,7 +121,7 @@ test('long descriptions, category names and large amounts remain readable', asyn
   }
 });
 
-test('capture branded desktop and mobile previews', async ({ page, browserName }) => {
+test('capture branded desktop and mobile previews', async ({ page, browser, browserName }) => {
   test.skip(browserName !== 'chromium', 'Publish one consistent screenshot set');
   await start(page);
   await mkdir('docs/previews', { recursive: true });
@@ -144,4 +144,16 @@ test('capture branded desktop and mobile previews', async ({ page, browserName }
   await page.locator('#t3').click();
   await page.evaluate(() => window.scrollTo(0, 0));
   await page.screenshot({ path: 'docs/previews/report.png', fullPage: true });
+  const englishContext = await browser.newContext({ locale: 'en-US', viewport: { width: 390, height: 844 } });
+  try {
+    const englishPage = await englishContext.newPage();
+    await englishPage.clock.setFixedTime(new Date('2026-11-08T12:00:00+03:30'));
+    await englishPage.goto('/Dang/');
+    expect(await englishPage.evaluate(async () => (await import('./app.js')).ready)).toBe(true);
+    await expect(englishPage.locator('#pageTitle')).toHaveText('Expense ledger');
+    await englishPage.evaluate(() => document.fonts.ready);
+    await englishPage.screenshot({ path: 'docs/previews/english-mobile.png', fullPage: true });
+  } finally {
+    await englishContext.close();
+  }
 });

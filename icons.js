@@ -1,5 +1,7 @@
 // Small, consistent interface glyphs. The brand mark always uses the supplied artwork.
 const paths = {
+  globe:
+    '<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-5 5-5 13 0 18M12 3c5 5 5 13 0 18"/>',
   plus: '<path d="M12 5v14M5 12h14"/>',
   calendar:
     '<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M16 3v4M8 3v4M3 11h18M8 15h.01M12 15h.01M16 15h.01M8 18h.01M12 18h.01"/>',
