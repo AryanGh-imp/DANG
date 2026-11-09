@@ -2222,7 +2222,6 @@ details > label {
   box-shadow: 0 2px 8px #00000004;
   transition:
     border-color 160ms ease,
-    background 160ms ease,
     transform 160ms ease;
 }
 .author-avatar {
