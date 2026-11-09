@@ -2,6 +2,7 @@ import { T, MN, WD, MG, WG } from './i18n.js';
 import { icon } from './icons.js';
 import { THEMES, themeKey, activeTheme } from './themes.js';
 import { browserPreferences } from './locale.js';
+import { watchUpdates } from './updates.js';
 import { ExpenseStore, defaultSettings, normaliseSettings, normaliseItems, validateBackup,
   mergeBackup, sameExpense, parseAmount, toLatin, sumAmounts, normaliseSearch, uid } from './store.js';
 
@@ -30,6 +31,9 @@ Object.assign(T.fa, {
   persist_na: 'این مرورگر درخواست ماندگاری حافظه را پشتیبانی نمی‌کند؛ پشتیبان بگیر.',
   offline_ready: 'نسخهٔ آفلاین آماده است.', offline_loading: 'در حال آماده‌سازی نسخهٔ آفلاین…',
   offline_na: 'نسخهٔ آفلاین آماده نشد. سایت را با HTTPS یا localhost باز کن و دوباره بارگذاری کن.',
+  update_heading: 'نسخهٔ تازه آماده است', update_note: 'امکانات تازه را دریافت کن؛ هزینه‌های ذخیره‌شده حفظ می‌شوند.',
+  update_action: 'به‌روزرسانی برنامه', update_finish: 'پیش از به‌روزرسانی، ورودی ناتمام را ذخیره یا پاک کن و پنجرهٔ ویرایش را ببند.',
+  update_failed: 'به‌روزرسانی انجام نشد. نسخهٔ فعلی در دسترس است؛ دوباره تلاش کن.',
   w_note: 'هزینه‌ها در حافظهٔ مرورگر و فایل‌های برنامه در کش آفلاین هستند. گزینه‌های زیر فقط داده‌ها و تنظیمات را تغییر می‌دهند؛ کش برنامه حفظ می‌شود.',
   avg_note: 'میانگین بر اساس تمام {n} روز بازه محاسبه شده است.',
   month_scope: 'بودجه و مقایسه مربوط به کل ماه هستند؛ جستجو فقط فهرست و جمع نتایج را فیلتر می‌کند.',
@@ -62,6 +66,9 @@ Object.assign(T.en, {
   persist_na: 'This browser does not support persistent storage requests. Keep backups.',
   offline_ready: 'The offline version is ready.', offline_loading: 'Preparing the offline version…',
   offline_na: 'The offline version is unavailable. Open the site over HTTPS or localhost and reload.',
+  update_heading: 'A new version is ready', update_note: 'Get the latest features. Your saved expenses are kept.',
+  update_action: 'Update app', update_finish: 'Before updating, save or clear unfinished input and close the expense editor.',
+  update_failed: 'Could not apply the update. The current version is still available; try again.',
   w_note: 'Expenses use browser storage; app files use the offline cache. These actions change only expenses and settings; app files remain cached.',
   avg_note: 'Average across all {n} days in the selected range.',
   month_scope: 'Budget and comparison cover the whole month; search filters the expense list and result totals.',
@@ -121,7 +128,7 @@ const initialPreferences = browserPreferences(navigator.languages?.length ? navi
 let items = [], S = { ...defaultSettings(), ...initialPreferences }, cur = 1, curCat = 'food', editId = null, editBase = null;
 let returnFocus = null, appliedRevision = -1, recoveryData = null, channel = null;
 let offlineKey = 'offline_loading';
-let backupDraft = false, statusTimer;
+let backupDraft = false, statusTimer, pendingWrites = 0, updater = null;
 const viewNames = ['add', 'calendar', 'report', 'settings'];
 const systemScheme = matchMedia('(prefers-color-scheme: dark)');
 document.querySelectorAll('[data-icon]').forEach(el => el.insertAdjacentHTML('afterbegin', icon(el.dataset.icon)));
@@ -448,6 +455,7 @@ function adopt(state, reset = false) {
   if (focusedPicker) $(focusedPicker.id).querySelector('.' + pickerClass)?.focus();
 }
 async function commit(operation, reset = false) {
+  pendingWrites++;
   try {
     const available = await ready;
     if (!available) throw new Error('storage-unavailable');
@@ -457,6 +465,8 @@ async function commit(operation, reset = false) {
     notify(error.message === 'conflict' ? 'conflict' : 'storage_error', true);
     if (error.message === 'conflict') await sync();
     return null;
+  } finally {
+    pendingWrites--;
   }
 }
 async function sync() {
@@ -523,7 +533,7 @@ asyncButton('bkrest', async () => {
     }
     return mergeBackup(state, backup);
   });
-  if (result) $('bkmsg').textContent = t('bk_ok', { n: nd(result.value) });
+  if (result) { backupDraft = false; $('bkmsg').textContent = t('bk_ok', { n: nd(result.value) }); }
 });
 asyncButton('recovery', async () => { if (recoveryData) deliver('dang-original-data.json', JSON.stringify(recoveryData, null, 2)); });
 asyncButton('persist', async () => {
@@ -608,14 +618,31 @@ window.addEventListener('beforeprint', () => {
 });
 async function offlineSetup() {
   try {
-    if (!('serviceWorker' in navigator)) throw new Error('unsupported');
-    const registration = await navigator.serviceWorker.register('./sw.js', { scope: './' });
-    await navigator.serviceWorker.ready;
-    offlineKey = 'offline_ready'; $('offlinemsg').textContent = t(offlineKey); $('connectionState').textContent = t(offlineKey); $('connectionState').parentElement.classList.add('ready');
-    // A waiting update can activate safely: current pages keep their loaded code.
-    registration.waiting?.postMessage({ type: 'ACTIVATE' });
-  } catch { offlineKey = 'offline_na'; $('offlinemsg').textContent = t(offlineKey); $('connectionState').textContent = t(offlineKey); }
+    updater = await watchUpdates({
+      onReady: () => setOfflineStatus('offline_ready'),
+      onUnavailable: () => setOfflineStatus('offline_na'),
+      onUpdate: () => { $('updateBanner').hidden = false; },
+      beforeReload: canUpdate,
+    });
+  } catch { setOfflineStatus('offline_na'); }
 }
+function setOfflineStatus(key) {
+  offlineKey = key; $('offlinemsg').textContent = t(key); $('connectionState').textContent = t(key);
+  $('connectionState').parentElement.classList.toggle('ready', key === 'offline_ready');
+}
+function canUpdate() {
+  const budget = $('bud').value.trim() ? parseAmount($('bud').value, true) : 0;
+  if (pendingWrites || editId !== null || backupDraft || $('amt').value.trim() || $('desc').value.trim() ||
+      $('cname').value.trim() || budget !== S.budget || $('ucustom').value.trim() !== S.ucustom) {
+    notify('update_finish', true); return false;
+  }
+  return true;
+}
+asyncButton('updateApp', async () => {
+  if (!canUpdate()) return;
+  try { if (!updater) throw new Error('update-unavailable'); await updater.apply(); }
+  catch { notify('update_failed', true); }
+});
 offlineSetup();
 if (window.visualViewport) {
   let viewportHeight = window.innerHeight;
