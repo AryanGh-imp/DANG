@@ -2,13 +2,13 @@
 
 ## Target and prerequisites
 
-Repository: [AryanGh-imp/DANG](https://github.com/AryanGh-imp/DANG). Maintainer: [AryanGh-imp](https://github.com/AryanGh-imp). Expected site URL: `https://aryangh-imp.github.io/DANG/`.
+Repository: [AryanGh-imp/DANG](https://github.com/AryanGh-imp/DANG). Maintainer: [AryanGh-imp](https://github.com/AryanGh-imp). Production site: `https://aryangh-imp.github.io/DANG/`.
 
-The first release is **1.0.0**, identified by the annotated Git tag `v1.0.0`. Release numbering is separate from the preserved internal storage and backup format versions.
+The current maintenance release is **1.0.1**, identified by the annotated Git tag `v1.0.1`. Preserve the first release's `v1.0.0` tag. Release numbering is separate from the unchanged internal storage and backup format versions.
 
-The project is prepared locally; a prepared checkout is not evidence of a successful hosted deployment. The first publication requires a reviewed push and GitHub Actions execution.
+A local build or push is not evidence of successful deployment. Check the Pages workflow conclusion and the actual hosted assets before announcing a release.
 
-Before the first deployment:
+Before a release:
 
 1. Review the local commit history and application preview.
 2. Confirm `origin` points to the intended repository and `main` is the release branch.
@@ -29,13 +29,28 @@ npm run test:pages
 git status --short
 ```
 
-When the maintainer is ready to publish, run `git push -u origin main`. This command is an explicit publication step; preparing documentation or committing locally does not perform it.
+Audit the entire diff and tracked content for private records, backups, credentials and local artifacts. The Cloudflare site token is an intended public identifier. Publish only after the checks pass; preserve failing results and document any target that is not met. A critical functional or security failure blocks publication.
 
-Publish the reviewed release tag separately with `git push origin v1.0.0`. The tag records the release commit; the Pages workflow deploys `main` rather than tag pushes.
+Commit the reviewed changes, then publish the annotated release tag and `main`:
+
+```sh
+git tag -a v1.0.1 -m "DANG v1.0.1 — Quality, Accessibility & Performance Improvements"
+git push origin main
+git push origin v1.0.1
+gh run list --workflow pages.yml --branch main
+```
+
+The tag must point to the final release commit. Pages deploys `main`, not tag pushes. Wait for the workflow to succeed and complete the production checks below before creating the GitHub Release:
+
+```sh
+gh release create v1.0.1 --verify-tag --title "DANG v1.0.1 — Quality, Accessibility & Performance Improvements" --notes-file RELEASE_NOTES_PATH
+```
+
+`RELEASE_NOTES_PATH` denotes a prepared file outside the published artifact. Notes should summarize actual changes, measured validation and known limitations; never claim dashboard ingestion without seeing it. Repository visibility is already public.
 
 ## Workflow structure
 
-`ci.yml` runs for pull requests, non-main branch pushes, manual runs, and reusable workflow calls. It checks static references, syntax, store behavior, and the release build. Chromium and WebKit browser jobs run after validation. Chromium also tests the assembled Pages artifact. Failed jobs retain diagnostic artifacts.
+`ci.yml` runs for pull requests, non-main branch pushes, manual runs, and reusable workflow calls. It checks static references, syntax, store behavior, and the release build. Chromium and WebKit browser jobs run after validation, including cold starts, WCAG 2.1 A label checks, optional analytics failure, and upgrades from the actual `v1.0.0` tag. Browser checkouts fetch release history. Ordinary tests isolate the beacon; dedicated integration tests use the unchanged official script with a local collector to avoid polluting production analytics. Chromium also tests the assembled Pages artifact. Failed jobs retain diagnostic artifacts.
 
 `pages.yml` runs for pushes to `main` and manual runs on `main`. It calls the reusable CI workflow, then assembles `dist/`, configures Pages, uploads the Pages artifact, and deploys it. Deployment waits for every validation and browser job to pass. Official actions are pinned to verified commit hashes with their release versions recorded in comments.
 
@@ -75,6 +90,16 @@ The canonical URL and sharing image in `index.html` target the Pages URL above. 
 ## Rollback
 
 Revert the faulty source commit on `main` and publish the revert through the same CI gate. The build fingerprint changes with the reverted content; keep the current update controller/build tooling when reverting a feature. For direct source deployments, give the worker a new source version. Preserve backup compatibility and test changes involving stored records before publication.
+
+Do not move a published tag or delete user storage to force a rollback. Existing installations receive the reverted release through the same update prompt. Keep the 1.0.1 display bootstrap if reverting unrelated features; its mirror is only a display hint and the database remains authoritative.
+
+## Production verification
+
+Verify HTTPS, the `/DANG/` canonical URL, `application-version` metadata and runtime file bytes against the final commit. Check that the hosted worker has the build fingerprint and registers with the `/DANG/` scope. Exercise English/Gregorian and Persian/Jalali, saved records, navigation, offline reload and reconnection in isolated profiles. Where possible, keep an isolated 1.0.0 session with synthetic records open across deployment and apply the downloaded update; confirm records, preferences and drafts survive.
+
+Run Lighthouse mobile and desktop against the assembled artifact or production, without analytics stubs or rendering instrumentation. Record performance, CLS and the other categories in the release QA report. A simulated mobile profile does not establish physical iPhone/Android installation behavior.
+
+Inspect the live beacon response and collector requests, including navigation and absence of synthetic financial markers. Query-only view navigation is tracked but Cloudflare strips query/hash from reported URLs, so views aggregate under `/DANG/`. Confirm authenticated dashboard visits separately; network acceptance alone does not establish dashboard ingestion. Blocked/offline analytics may produce a browser resource diagnostic but must never cause an application exception or prevent saving. See [privacy](privacy.md).
 
 ## Repository presentation
 

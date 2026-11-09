@@ -19,3 +19,5 @@ DANG runs on a static host and stores data locally. It escapes user-provided rep
 Local storage is not application-encrypted. A compromised device/browser profile or malicious code executing on the hosting origin is outside that local confidentiality boundary. Export backups regularly and keep the hosting repository and workflow permissions protected.
 
 See [privacy](docs/privacy.md) for data handling and [architecture](docs/architecture.md) for transaction and cache behavior.
+
+Version 1.0.1 permits the official Cloudflare analytics script and collector as an optional runtime dependency. Its public site token is intentionally visible. Expense data is not provided to analytics; tests inspect current beacon payloads for synthetic financial markers. Changes to analytics must retain this boundary and offline independence. The optional local display hint contains only validated presentation preferences; it does not replace IndexedDB or hold financial records.

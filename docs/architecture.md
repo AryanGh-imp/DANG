@@ -7,6 +7,7 @@ DANG is a static application built with HTML, CSS, and browser-native JavaScript
 | File | Responsibility |
 | --- | --- |
 | `index.html` | Semantic application shell, navigation, forms, metadata, install links |
+| `bootstrap.js` | Pre-body display preferences and translated initial shell; early read-only access to existing preferences |
 | `app.js` | View state, date adapters, rendering, user actions, reports, exports, focus and synchronization |
 | `store.js` | Validation, normalizing legacy data, backup merges, IndexedDB transactions |
 | `i18n.js` | Persian/English labels, calendar month names and weekday labels |
@@ -34,7 +35,7 @@ flowchart LR
 
 The database name is `dang-expenses-v3:` followed by the application directory path. The database has version 1 and an object store named `data`. Its `state` record contains `{ v, rev, settings, items }`; the optional `recovery` record retains original migration or repair data. The record format version, database version, package version, and service-worker cache version serve different purposes.
 
-The application's first release is 1.0.0. The existing `v3` database namespace and backup format are compatibility identifiers retained to keep previously stored expenses available; they are not previous public application releases.
+The current maintenance release is 1.0.1; the first public release was 1.0.0. The existing `v3` database namespace and backup format are compatibility identifiers retained to keep previously stored expenses available. Version 1.0.1 makes no database or backup-schema migration.
 
 Every write reads the latest record inside an IndexedDB `readwrite` transaction, applies a synchronous operation, validates the result, increments the revision, and writes it back. IndexedDB serializes these transactions across tabs. Failed validation or writes abort the transaction; the UI does not report a successful save or clear its input on failure.
 
@@ -52,6 +53,14 @@ On first visit, `locale.js` selects the first Persian or English entry in `navig
 
 These preferences only seed database creation. Saved IndexedDB settings and valid legacy language/calendar choices take precedence. Legacy profiles without a calendar choice retain the original Jalali default. The global header control and Settings selector update the same language setting through the existing transaction flow. Switching preserves the current view, selected calendar, expense dates and expense draft; a failed write keeps the current language.
 
+## Initial rendering and accessibility
+
+The small classic `bootstrap.js` script runs in the head before the body is parsed. It establishes language/direction and theme from validated display hints or browser/legacy preferences. It starts a read-only lookup for existing IndexedDB profiles in parallel with CSS/font loading; an aborted first-time open creates no database. Initial shell translation attributes let its parser observer show the appropriate labels immediately. `app.js` disconnects the observer before taking over rendering.
+
+Successful state adoption refreshes the path-scoped display hint with `lang`, `cal`, `theme` and `hasBudget`. No financial records are copied into it. The hint is optional; database settings are authoritative, and restricted/malformed localStorage does not block startup. An old profile without a hint uses the early asynchronous database read; a browser that denies both storage mechanisms cannot provide persisted preferences before rendering.
+
+Date controls and category buttons have initial structure, the header has a stable minimum footprint, and the initial activity card reserves space while records load. Startup progress uses a non-displacing status notice. Both font subsets are preloaded; no blank-screen gate or artificial Lighthouse delay is used. Module dependencies load normally: `modulepreload` was rejected after the two-tab offline update regression demonstrated stale module reuse in WebKit. `applyLang` translates the expense summary's accessible name and emblem alternative text on every language change. The credit link relies on its visible GitHub/handle content for its accessible name.
+
 ## Views and navigation
 
 The four views are entry, calendar, report, and settings. The `view` query parameter records the selected view (`add`, `calendar`, `report`, or `settings`). The History API supports back/forward navigation without separate routed HTML pages. Expense dates are stored as Gregorian ISO date strings; display adapters provide Jalali or Gregorian presentation.
@@ -67,6 +76,10 @@ An initial worker activates normally. Later workers wait until a user selects Up
 Activation removes previous caches belonging to the same app path and claims clients. The requesting tab reloads once after its controller changes and activation completes. Other tabs retain loaded code and receive their own update notice. The app checks for pending writes, expense/backup/category/settings input and an open editor both before activation and before reloading. Unfinished work postpones the reload. A fully cached update can also be applied offline.
 
 Expense data lives separately in IndexedDB. `scripts/release-version.js` fingerprints the allowlisted source bytes and application version. The Pages build stamps this deterministic identity into the copied `dist/sw.js`, leaving source files untouched. Published runtime changes receive a new cache identity automatically; documentation-only changes keep it. Direct source-server development still uses the editable `VERSION` in `sw.js`. See [deployment](deployment.md).
+
+## Analytics boundary
+
+The exact official Cloudflare Web Analytics module appears once near the end of `index.html`. It is independent of the application module and is absent from the release precache. The application passes string URLs to the History API for compatibility with history-based trackers. The current beacon recognizes internal navigation, strips query/hash URL fields and aggregates views under the same path. It measures browser/performance telemetry, including structural selectors, without application-provided expense data. Offline and blocked-analytics paths are independently tested. See [privacy](privacy.md).
 
 ## Export boundary
 

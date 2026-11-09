@@ -15,7 +15,8 @@ Brand artwork
     Ancient Warrior Engraving Emblem.png
   Preserved source: assets/branding/dang-emblem.png
   SHA-256: e8c13fbdd2bf52e520e215b65beca733d24def5bbff2a8afb115ec06fdcfc87f
-  Derived assets: assets/branding/dang-emblem.webp, icon-*.png, social-card.png
+  Derived assets: assets/branding/dang-emblem*.webp, brand-*.webp,
+    icon-*.png, social-card.png
   This artwork is not covered by the MIT software license. Contact the
   maintainer, https://github.com/AryanGh-imp, for permission to reuse the artwork.
   No upstream artwork author or license metadata accompanied the supplied file.

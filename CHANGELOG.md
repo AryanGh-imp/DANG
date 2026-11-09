@@ -2,7 +2,25 @@
 
 Release versions describe application changes; database format and service-worker cache versions are maintained separately.
 
-## 1.0.0 — 2026-11-08
+## 1.0.1 — 2026-11-09
+
+### Quality and performance
+
+- Establish language/direction and theme before body rendering, with a path-scoped display-preference mirror and an early read for existing profiles.
+- Populate translated initial shell labels, reserve date/category/content space, preload both local font subsets, and keep the startup notice out of normal layout flow.
+- Generate responsive 180/360/540-pixel hero images and small WebP brand portraits; optimize PNG installation icons with high-fidelity palettes while preserving the original emblem.
+- Translate expense-summary and emblem descriptions in both languages, match the GitHub credit's accessible name to its visible text, and include WCAG 2.1 Level A rules in automated checks.
+
+### Analytics, compatibility and documentation
+
+- Integrate the official Cloudflare Web Analytics module with the maintainer's public site token. Analytics is independent of initialization and offline caching; financial data is excluded from the exercised telemetry payloads.
+- Use string URLs for History API navigation, including compatibility with analytics history wrappers.
+- Add cold-start, saved-preference, accessibility, analytics/privacy and actual v1.0.0-to-v1.0.1 upgrade regressions; extend WebKit coverage to functional and deployment behavior.
+- Keep module loading free of `modulepreload` after a WebKit regression showed that a second tab could reuse the previous release's module after an offline update.
+- Isolate ordinary functional tests from the real analytics dashboard; integration tests use the current official script and a real temporary collector.
+- Update both READMEs and the architecture, privacy, design, testing, deployment, security and contribution guidance. Keep database version 1, stored format 3 and backup format 3 unchanged.
+
+## 1.0.0 — 2026-11-09
 
 Initial project release.
 
@@ -34,4 +52,4 @@ Initial project release.
 - Aligned development and CI with Node.js 26 LTS using `.nvmrc` as the shared version selector.
 - Organized the initial source history into meaningful module and documentation commits.
 
-This entry records local release preparation. Publication occurs only after a reviewed push and successful Pages workflow run.
+The first public release was published on November 9, 2026 as [v1.0.0](https://github.com/AryanGh-imp/DANG/releases/tag/v1.0.0).

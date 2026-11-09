@@ -4,7 +4,7 @@
 
 # DANG — Personal Expense Ledger
 
-**First release: 1.0.0** · Git tag: `v1.0.0`
+**Current release: 1.0.1** · Git tag: `v1.0.1`
 
 A private, offline-first expense tracker that runs entirely in your browser. DANG combines Persian and English interfaces, Jalali and Gregorian calendars, reliable local storage, and a visual identity inspired by ancient Persian engraving, stone, and bronze.
 
@@ -12,7 +12,7 @@ A private, offline-first expense tracker that runs entirely in your browser. DAN
 
 Created and maintained by [AryanGh-imp](https://github.com/AryanGh-imp). Repository: [AryanGh-imp/DANG](https://github.com/AryanGh-imp/DANG).
 
-The configured deployment target is **[GitHub Pages](https://aryangh-imp.github.io/DANG/)**. The site becomes available after the repository is pushed and Pages deployment succeeds.
+Use DANG at **[aryangh-imp.github.io/DANG/](https://aryangh-imp.github.io/DANG/)**. See the [release history](CHANGELOG.md) for maintenance improvements.
 
 ## Features
 
@@ -22,12 +22,14 @@ The configured deployment target is **[GitHub Pages](https://aryangh-imp.github.
 - Filter reports by month or custom range, search descriptions and amounts, and track a monthly budget.
 - Export JSON backups, spreadsheet-compatible CSV, and reports through the browser's Print / Save as PDF flow.
 - Restore backups by merging expenses, preserving conflicting copies and optionally restoring settings.
-- Work offline after the application has prepared its cache. No account, backend, analytics, or runtime CDN is required.
+- Work offline after the application has prepared its cache. No account or backend is required; optional Cloudflare Web Analytics does not participate in startup or offline caching.
 - Use six coordinated light/dark themes or follow the device's appearance preference.
 - Use a desktop sidebar or mobile bottom navigation, with RTL/LTR layouts, visible keyboard focus, and safe-area spacing.
 - Start in your browser's first supported language (Persian or English), with English as the fallback. Switch at any time using the visible **English / فارسی** header button; your saved choice takes precedence on future visits.
 
 New profiles pair Persian with the Jalali calendar and English with Gregorian. Changing the interface language keeps your selected calendar, expenses, and current expense draft.
+
+Version 1.0.1 stabilizes the first render, serves smaller responsive branding images, and fixes English screen-reader descriptions and the GitHub link's accessible name. A small display-preference mirror helps show your saved language and theme immediately; IndexedDB remains the authoritative data store.
 
 Currency choices are labels, not exchange-rate conversions. Expenses remain on the current browser, origin, and application path; devices do not synchronize automatically.
 
@@ -80,7 +82,7 @@ The build copies an explicit set of application files into `dist/`; it does not 
 
 The Pages workflow validates the application, runs Chromium and WebKit checks, tests the assembled release, and uploads only `dist/`. Deployment requires all checks to succeed.
 
-Before the first deployment, select **Settings → Pages → Build and deployment → Source: GitHub Actions**. A push to `main`, or a manual Pages workflow run on `main`, then deploys the site. See the [deployment guide](docs/deployment.md) for the first-push checklist, workflow permissions, update behavior, and rollback instructions.
+For a new Pages setup, select **Settings → Pages → Build and deployment → Source: GitHub Actions**. A push to `main`, or a manual Pages workflow run on `main`, then deploys the site. See the [deployment guide](docs/deployment.md) for the release checklist, workflow permissions, production verification, update behavior, and rollback instructions.
 
 ## Updates
 
@@ -93,6 +95,8 @@ IndexedDB stores expense data in atomic transactions and protects against stale 
 Browser storage is not a permanent backup. Private browsing, clearing site data, browser eviction, or changing the domain/path can make data unavailable. Download JSON backups regularly and import them when moving to another browser, device, or origin. The persistent-storage request in Settings can help reduce eviction, but browsers decide whether to grant it.
 
 See [privacy and storage](docs/privacy.md), [backup format](docs/data-format.md), and [troubleshooting](docs/troubleshooting.md). Expense data and backups are not included in the release artifact.
+
+While online, the site loads Cloudflare Web Analytics to measure visits and performance. The application does not send expenses, amounts, descriptions, category names, budgets or backups. Cloudflare receives page/performance and browser/device telemetry; internal view changes are tracked as visits to the same application path, with query parameters omitted by the current beacon. Blocking analytics leaves the ledger fully usable. See the [analytics disclosure](docs/privacy.md#cloudflare-web-analytics).
 
 ## Documentation
 
@@ -113,4 +117,4 @@ See [privacy and storage](docs/privacy.md), [backup format](docs/data-format.md)
 
 Application source and project documentation are [MIT licensed](LICENSE). The locally hosted Vazirmatn font uses the [SIL Open Font License](assets/fonts/OFL-Vazirmatn.txt).
 
-The maintainer-supplied emblem is preserved as `assets/branding/dang-emblem.png`; its optimized image, favicons, Apple touch icon, maskable Android icon, and social image are generated by `scripts/build-brand.py`. Artwork reuse is separate from the software license. See [NOTICE](NOTICE) for attribution and licensing boundaries.
+The maintainer-supplied emblem is preserved as `assets/branding/dang-emblem.png`; responsive WebP images, small brand portraits, optimized PNG installation icons and the social image are generated by `scripts/build-brand.py`. Artwork reuse is separate from the software license. See [NOTICE](NOTICE) for attribution and licensing boundaries.

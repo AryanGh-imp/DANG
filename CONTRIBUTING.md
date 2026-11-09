@@ -24,4 +24,6 @@ Keep pull requests focused. Describe changes for a reviewer who has not seen the
 
 Never include personal backups, browser profiles, tokens, or real financial data in issues, screenshots, tests, or commits. Use [SECURITY.md](SECURITY.md) for sensitive vulnerability reports. Preserve migration/recovery behavior and document any schema changes before implementation.
 
+The documented Cloudflare site token is an intentionally public identifier, not an authentication secret. Do not add private Cloudflare API credentials. Ordinary tests isolate telemetry from the real dashboard; integration tests use the official script with a temporary collector. Analytics changes must preserve offline operation and demonstrate that financial fields are absent from outbound payloads. Include WCAG 2.1 Level A checks and cold/saved-language starts when changing labels or initialization.
+
 Contributed source and documentation are distributed under the project's MIT license. Third-party files retain their own licenses; record new dependencies or assets in [NOTICE](NOTICE). The brand artwork has separate reuse terms.

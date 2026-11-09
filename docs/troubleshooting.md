@@ -34,6 +34,14 @@ Confirm the Pages workflow succeeded and deployed the fingerprinted `dist/` outp
 
 PDF export opens a print preview. Use the browser's Print dialog and choose Save as PDF, or the platform's equivalent. On mobile, available print/share destinations depend on the OS. Keep the preview open and use its Print control if the first print call was blocked. Clipboard export requires browser permission and a supported secure context; downloading JSON or CSV remains an alternative.
 
+## Cloudflare Analytics is blocked or the dashboard has no visits
+
+The ledger remains usable when the optional beacon is blocked or offline. Browser-generated failed-resource messages can describe this optional request; they are different from application exceptions or failed expense saves. Confirm the live HTML includes one official script with the intended public site token, then inspect actual requests to `cloudflareinsights.com/cdn-cgi/rum`. Ad blockers, network restrictions and dashboard ingestion delays can affect analytics.
+
+The current beacon strips query parameters, so internal `?view=` changes appear under the same application path rather than as individually named sections. A successful collector request does not by itself prove that data has appeared in the authenticated dashboard. Check the correct site and time range there before claiming ingestion. See [privacy](privacy.md).
+
+The provider's collector can reject a localhost origin that includes a development port with a CORS mismatch. This may lower a local Lighthouse Best Practices score despite a working ledger. Verify delivery on the configured HTTPS production origin; do not disable the beacon or weaken browser security to hide the local diagnostic.
+
 ## Browser tests cannot launch
 
 Run `npx playwright install chromium webkit`. On Linux use `--with-deps` to install required system libraries. The Windows Chromium config uses installed Google Chrome at its standard path when available. Close only the server you own when 4173 or 4174 is already in use; do not terminate unrelated Node processes.
