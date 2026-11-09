@@ -402,6 +402,7 @@ a {
 }
 .workspace-header {
   display: flex;
+  min-height: 88px;
   justify-content: space-between;
   gap: 20px;
   align-items: center;
@@ -494,6 +495,7 @@ a {
 }
 .date-chip {
   display: flex;
+  min-width: 110px;
   gap: 9px;
   align-items: center;
   border: 1px solid var(--line);
@@ -770,6 +772,7 @@ textarea {
 }
 .dp {
   display: grid;
+  min-height: 48px;
   grid-template-columns: 1fr 1.6fr 1.2fr;
   gap: 8px;
 }
@@ -1534,7 +1537,8 @@ details > label {
   color: var(--danger);
   background: var(--danger-soft);
 }
-.status[data-kind="toast"] {
+.status[data-kind="toast"],
+.status[data-kind="loading"] {
   position: fixed;
   bottom: 28px;
   inset-inline-end: 30px;
@@ -1748,6 +1752,7 @@ details > label {
     padding: 0;
   }
   .workspace-header {
+    min-height: 123px;
     margin-bottom: 22px;
     align-items: flex-end;
   }
@@ -1810,7 +1815,8 @@ details > label {
   .cleanup-actions {
     grid-template-columns: 1fr 1fr;
   }
-  .status[data-kind="toast"] {
+  .status[data-kind="toast"],
+  .status[data-kind="loading"] {
     bottom: calc(96px + env(safe-area-inset-bottom, 0px));
     inset-inline: 24px;
     width: max-content;
@@ -2082,6 +2088,7 @@ details > label {
   }
   .date-chip {
     max-width: 90px;
+    min-width: 90px;
     font-size: 10px;
   }
   .workspace-header p {

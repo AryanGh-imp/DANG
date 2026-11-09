@@ -29,7 +29,12 @@ export async function checkSite() {
     }
   }
   const html = await read('index.html');
+  const { version } = JSON.parse(await read('package.json'));
+  assert(html.includes(`<meta name="application-version" content="${version}"`), 'HTML application version must match package.json');
   for (const match of html.matchAll(/(?:src|href)="([^"]+)"/g)) await localReference('index.html', match[1], true);
+  for (const match of html.matchAll(/srcset="([^"]+)"/g)) for (const candidate of match[1].split(',')) await localReference('index.html', candidate.trim().split(/\s+/)[0], true);
+  assert.equal((html.match(/static\.cloudflareinsights\.com\/beacon\.min\.js/g) || []).length, 1, 'Analytics snippet must occur exactly once');
+  assert(html.includes(`<script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "4421e6998bd746868c9720de923cedf2"}'></script>`), 'Analytics configuration changed');
   assert(html.includes('href="https://github.com/AryanGh-imp"'), 'Missing maintainer profile');
   const manifest = JSON.parse(await read('manifest.webmanifest'));
   assert.equal(manifest.start_url, './');
@@ -46,6 +51,7 @@ export async function checkSite() {
   assert(cached, 'Cannot read service worker precache list');
   const precached = new Set();
   for (const match of cached[1].matchAll(/['"]([^'"]+)['"]/g)) {
+    assert(!/^https?:/.test(match[1]), 'External services must never be precached');
     await localReference('sw.js', match[1], true); precached.add(match[1]);
   }
   for (const file of files.filter(file => file.endsWith('.js') && file !== 'sw.js')) {

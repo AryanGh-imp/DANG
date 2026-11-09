@@ -77,6 +77,7 @@ Object.assign(T.en, {
 });
 Object.assign(T.fa, {
   title: 'دفتر هزینه‌ها', tab_add: 'ثبت هزینه', add: 'ثبت هزینه',
+  summary_label: 'خلاصهٔ هزینه‌ها', emblem_alt: 'نشان حکاکی‌شدهٔ جنگجوی DANG',
   brand_caption: 'دفتر هزینه‌های شخصی', brand_motto: 'هر هزینه، روشن و ماندگار.',
   device_private: 'خصوصی، روی همین دستگاه', footer_note: 'دفترِ شما، روی دستگاهِ شما.',
   skip_main: 'رفتن به محتوای اصلی', open_calendar: 'باز کردن تقویم', close_edit: 'بستن پنجرهٔ ویرایش',
@@ -101,6 +102,7 @@ Object.assign(T.fa, {
 });
 Object.assign(T.en, {
   title: 'Expense ledger', tab_add: 'Add expense', add: 'Save expense',
+  summary_label: 'Expense summary', emblem_alt: 'DANG engraved warrior emblem',
   brand_caption: 'Personal expense ledger', brand_motto: 'Every expense, accounted for.',
   device_private: 'Private, on this device', footer_note: 'Your ledger. Your device.',
   skip_main: 'Skip to main content', open_calendar: 'Open calendar', close_edit: 'Close expense editor',
@@ -125,7 +127,7 @@ Object.assign(T.en, {
 
 const $ = id => document.getElementById(id);
 const initialPreferences = browserPreferences(navigator.languages?.length ? navigator.languages : [navigator.language]);
-let items = [], S = { ...defaultSettings(), ...initialPreferences }, cur = 1, curCat = 'food', editId = null, editBase = null;
+let items = [], S = { ...defaultSettings(), ...initialPreferences, ...window.dangStartup?.preferences }, cur = 1, curCat = 'food', editId = null, editBase = null;
 let returnFocus = null, appliedRevision = -1, recoveryData = null, channel = null;
 let offlineKey = 'offline_loading';
 let backupDraft = false, statusTimer, pendingWrites = 0, updater = null;
@@ -186,7 +188,7 @@ function notify(key, error = false) {
   $('status').textContent = key ? t(key) : '';
   $('status').classList.toggle('error', error);
   $('status').hidden = !key;
-  $('status').dataset.kind = key === 'saved' ? 'toast' : error ? 'error' : 'notice';
+  $('status').dataset.kind = key === 'saved' ? 'toast' : key === 'loading' ? 'loading' : error ? 'error' : 'notice';
   if (key === 'saved') statusTimer = setTimeout(() => { $('status').hidden = true; }, 3000);
 }
 function inputError(id, key) {
@@ -232,7 +234,7 @@ function renderChips() {
 }
 function rowHTML(e) {
   const c = catOf(e.cat), description = e.desc || cname(c);
-  return '<button type="button" class="row" data-id="' + esc(e.id) + '" aria-label="' + esc(t('edit_item', { desc: description, amount: fm(e.amt) })) + '"><span class="category-mark" style="--category-color:' + c.c + '" aria-hidden="true">' + icon(['food', 'move', 'shop'].includes(c.k) ? c.k : c.k === 'bill' ? 'receipt' : 'tag') + '</span><span class="d"><span>' + esc(description) + '</span><small class="row-category">' + esc(cname(c)) + '</small></span><span class="a num">' + fa(e.amt) + '</span></button>';
+  return '<button type="button" class="row" data-id="' + esc(e.id) + '" aria-haspopup="dialog"><span class="category-mark" style="--category-color:' + c.c + '" aria-hidden="true">' + icon(['food', 'move', 'shop'].includes(c.k) ? c.k : c.k === 'bill' ? 'receipt' : 'tag') + '</span><span class="d"><span>' + esc(description) + '</span><small class="row-category">' + esc(cname(c)) + '</small></span><span class="a num">' + fa(e.amt) + '</span></button>';
 }
 function dayHTML(date, list) {
   return '<div class="card activity-card"><div class="day"><div class="day-heading">' + icon('receipt') + '<div><span class="day-title">' + t(date === today() ? 'activity_today' : 'activity_heading') + '</span><small>' + jstr(date) + '</small></div></div><small>' + t('activity_count', { n: nd(list.length) }) + '</small></div>' + (list.length ? '<div class="expense-list">' + list.map(rowHTML).join('') + '</div><div class="total"><span>' + t('day_total') + '</span><span class="num">' + hm(sum(list)) + '</span></div><p class="note">' + t('tap_hint') + '</p>' : '<div class="empty"><span class="empty-symbol">' + icon('receipt') + '</span><p>' + t('none_day') + '</p><small>' + t('empty_help') + '</small></div>');
@@ -257,7 +259,8 @@ function renderCal() {
   for (let i = 0; i < offset; i++) html += '<div class="cd e"></div>';
   for (let d = 1; d <= dim(y, m); d++) {
     const iso = toIso(y, m, d), cents = totals.get(iso) || 0;
-    html += '<button class="cd' + (iso === cal.sel ? ' sel' : '') + (iso === today() ? ' tod' : '') + '" data-d="' + iso + '" aria-label="' + esc(jstr(iso) + ': ' + fm(cents / 100)) + '" aria-pressed="' + (iso === cal.sel) + '">' + (cents ? '<i aria-hidden="true" style="opacity:' + (.08 + .2 * cents / max).toFixed(2) + '"></i>' : '') + '<span class="n1">' + nd(d) + '</span><span class="n2 num">' + (cents ? cmp(cents / 100) : '') + '</span></button>';
+    const visibleLabel = nd(d) + (cents ? ' ' + cmp(cents / 100) : '');
+    html += '<button class="cd' + (iso === cal.sel ? ' sel' : '') + (iso === today() ? ' tod' : '') + '" data-d="' + iso + '" aria-label="' + esc(visibleLabel + ' — ' + jstr(iso) + ': ' + fm(cents / 100)) + '" aria-pressed="' + (iso === cal.sel) + '">' + (cents ? '<i aria-hidden="true" style="opacity:' + (.08 + .2 * cents / max).toFixed(2) + '"></i>' : '') + '<span class="n1">' + nd(d) + '</span> <span class="n2 num">' + (cents ? cmp(cents / 100) : '') + '</span></button>';
   }
   $('cal').innerHTML = html + '</div><div class="note" style="margin:10px 0 0">' + t('cal_hint') + '</div>';
   const step = direction => { const focus = direction < 0 ? 'cprev' : 'cnext'; cal.m += direction; if (cal.m < 1) { cal.m = 12; cal.y--; } if (cal.m > 12) { cal.m = 1; cal.y++; } cal.sel = null; renderCal(); $(focus).focus(); };
@@ -401,6 +404,8 @@ function renderThemes() {
 function ucShow() { $('ucustom').style.display = S.unit === 'custom' ? 'block' : 'none'; $('ucustomLabel').hidden = S.unit !== 'custom'; $('ucustom').value = S.ucustom; }
 function applyLang() {
   document.documentElement.lang = S.lang; document.documentElement.dir = rtl() ? 'rtl' : 'ltr';
+  document.querySelector('.ledger-summary').setAttribute('aria-label', t('summary_label'));
+  document.querySelector('.hero-emblem img').alt = t('emblem_alt');
   const targetLanguage = rtl() ? 'en' : 'fa';
   $('languageLabel').textContent = targetLanguage === 'en' ? 'English' : 'فارسی';
   $('languageLabel').lang = targetLanguage;
@@ -436,7 +441,7 @@ function tab(n, writeUrl = true) {
   for (let i = 1; i <= 4; i++) { $('v' + i).hidden = i !== n; $('t' + i).className = i === n ? 'on' : ''; $('t' + i).setAttribute('aria-pressed', String(i === n)); }
   if (n === 4) { $('bud').value = S.budget || ''; if (!backupDraft) bkFill(); $('bkmsg').textContent = ''; }
   updatePageHeading();
-  if (writeUrl && changed) { const url = new URL(location.href); url.searchParams.set('view', viewNames[n - 1]); history.pushState(null, '', url); }
+  if (writeUrl && changed) { const url = new URL(location.href); url.searchParams.set('view', viewNames[n - 1]); history.pushState(null, '', url.href); }
   refresh();
 }
 function adopt(state, reset = false) {
@@ -447,6 +452,8 @@ function adopt(state, reset = false) {
   const pickerClass = focusedPicker ? focused.className : null;
   const anchor = toIso(cal.y, cal.m, 1), changedCalendar = S.cal !== state.settings.cal;
   items = state.items; S = state.settings; appliedRevision = state.rev ?? 0;
+  window.dangStartup?.remember(S);
+  document.documentElement.dataset.budget = String(S.budget > 0);
   applyTheme(); applyLang();
   pickerIds.forEach(id => { dpInit(id, $(id)._cb); dpSet(id, dates[id]); });
   if (changedCalendar) { const j = D(cal.sel || anchor); cal.y = j.y; cal.m = j.m; }
@@ -575,6 +582,7 @@ function readLegacy() {
   catch { warning = true; try { oldItems = JSON.parse(itemsText || '[]'); } catch { oldItems = []; } try { settings = JSON.parse(settingsText || '{}'); } catch { settings = {}; } }
   return { items: oldItems, settings, warning, raw: itemsText || settingsText ? { itemsText, settingsText } : null };
 }
+window.dangStartup?.finish();
 dpReset(); applyTheme(); applyLang(); tab(viewNames.indexOf(new URL(location.href).searchParams.get('view')) + 1 || 1, false); notify('loading');
 document.body.setAttribute('aria-busy', 'true');
 export const ready = (async () => {

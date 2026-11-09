@@ -2,6 +2,8 @@
 <html lang="fa" dir="rtl">
   <head>
     <meta charset="utf-8" />
+    <meta name="application-version" content="1.0.1" />
+    <script src="./bootstrap.js"></script>
     <meta
       name="viewport"
       content="width=device-width, initial-scale=1, viewport-fit=cover"
@@ -47,50 +49,51 @@
       crossorigin
     />
     <link rel="stylesheet" href="./assets/css/styles.css" />
+    <link rel="preload" href="./assets/fonts/vazirmatn-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
     <title>DANG — دفتر هزینه‌ها</title>
   </head>
   <body>
-    <a href="#workspace" class="skip-link" data-i="skip_main"
+    <a href="#workspace" class="skip-link" data-i="skip_main" data-initial-fa="رفتن به محتوای اصلی" data-initial-en="Skip to main content"
       >رفتن به محتوای اصلی</a
     >
     <div class="app-shell" id="appShell">
       <aside class="sidebar" aria-label="DANG">
         <div class="brand">
           <img
-            src="./assets/branding/icon-192.png"
+            src="./assets/branding/brand-128.webp" srcset="./assets/branding/brand-64.webp 64w, ./assets/branding/brand-128.webp 128w, ./assets/branding/brand-192.webp 192w" sizes="(max-width: 980px) 32px, 52px"
             alt=""
             width="52"
             height="52"
           />
           <div>
             <strong lang="en" translate="no">DANG</strong
-            ><span data-i="brand_caption">دفتر هزینه‌های شخصی</span>
+            ><span data-i="brand_caption" data-initial-fa="دفتر هزینه‌های شخصی" data-initial-en="Personal expense ledger">دفتر هزینه‌های شخصی</span>
           </div>
         </div>
         <nav class="tabs" aria-label="بخش‌های برنامه" id="navigation">
           <button type="button" id="t1" class="on" data-icon="plus">
-            <span data-i="tab_add">ثبت</span>
+            <span data-i="tab_add" data-initial-fa="ثبت هزینه" data-initial-en="Add expense">ثبت</span>
           </button>
           <button type="button" id="t2" data-icon="calendar">
-            <span data-i="tab_cal">تقویم</span>
+            <span data-i="tab_cal" data-initial-fa="تقویم" data-initial-en="Calendar">تقویم</span>
           </button>
           <button type="button" id="t3" data-icon="chart">
-            <span data-i="tab_rep">گزارش</span>
+            <span data-i="tab_rep" data-initial-fa="گزارش" data-initial-en="Report">گزارش</span>
           </button>
           <button type="button" id="t4" data-icon="settings">
-            <span data-i="tab_set">تنظیمات</span>
+            <span data-i="tab_set" data-initial-fa="تنظیمات" data-initial-en="Settings">تنظیمات</span>
           </button>
         </nav>
         <div class="sidebar-foot">
           <div class="lotus-rule" aria-hidden="true"><span>✦</span></div>
-          <p data-i="brand_motto">هر هزینه، روشن و ماندگار.</p>
+          <p data-i="brand_motto" data-initial-fa="هر هزینه، روشن و ماندگار." data-initial-en="Every expense, accounted for.">هر هزینه، روشن و ماندگار.</p>
           <div class="privacy-line">
             <span data-icon="shield"></span
-            ><span data-i="device_private">خصوصی، روی همین دستگاه</span>
+            ><span data-i="device_private" data-initial-fa="خصوصی، روی همین دستگاه" data-initial-en="Private, on this device">خصوصی، روی همین دستگاه</span>
           </div>
           <div class="connection-line">
             <i aria-hidden="true"></i
-            ><span id="connectionState">در حال آماده‌سازی…</span>
+            ><span id="connectionState" data-initial-fa="در حال آماده‌سازی نسخهٔ آفلاین…" data-initial-en="Preparing the offline version…">در حال آماده‌سازی…</span>
           </div>
         </div>
       </aside>
@@ -100,14 +103,14 @@
           <div>
             <div class="mobile-brand" lang="en" translate="no">
               <img
-                src="./assets/branding/icon-192.png"
+                src="./assets/branding/brand-128.webp" srcset="./assets/branding/brand-64.webp 64w, ./assets/branding/brand-128.webp 128w, ./assets/branding/brand-192.webp 192w" sizes="(max-width: 980px) 32px, 52px"
                 alt=""
                 width="32"
                 height="32"
               /><strong>DANG</strong>
             </div>
-            <h1 id="pageTitle">دفتر هزینه‌ها</h1>
-            <p id="pageSubtitle">
+            <h1 id="pageTitle" data-initial-fa="دفتر هزینه‌ها" data-initial-en="Expense ledger">دفتر هزینه‌ها</h1>
+            <p id="pageSubtitle" data-initial-fa="هزینه‌های روزانه‌ات را با خیال آسوده ثبت کن." data-initial-en="Keep a clear record of your everyday spending.">
               هزینه‌های روزانه‌ات را با خیال آسوده ثبت کن.
             </p>
           </div>
@@ -141,13 +144,13 @@
           hidden
         >
           <div>
-            <h2 data-i="update_heading">نسخهٔ تازه آماده است</h2>
-            <p data-i="update_note">
+            <h2 data-i="update_heading" data-initial-fa="نسخهٔ تازه آماده است" data-initial-en="A new version is ready">نسخهٔ تازه آماده است</h2>
+            <p data-i="update_note" data-initial-fa="امکانات تازه را دریافت کن؛ هزینه‌های ذخیره‌شده حفظ می‌شوند." data-initial-en="Get the latest features. Your saved expenses are kept.">
               امکانات تازه را دریافت کن؛ هزینه‌های ذخیره‌شده حفظ می‌شوند.
             </p>
           </div>
           <button type="button" id="updateApp" data-icon="reload">
-            <span data-i="update_action">به‌روزرسانی برنامه</span>
+            <span data-i="update_action" data-initial-fa="به‌روزرسانی برنامه" data-initial-en="Update app">به‌روزرسانی برنامه</span>
           </button>
         </section>
         <div
@@ -162,12 +165,16 @@
         >
 
         <section id="v1" aria-labelledby="t1">
-          <section class="ledger-summary" aria-label="خلاصهٔ هزینه‌ها">
-            <div id="overview" class="ledger-overview"></div>
+          <section class="ledger-summary" aria-label="خلاصهٔ هزینه‌ها" data-initial-aria-fa="خلاصهٔ هزینه‌ها" data-initial-aria-en="Expense summary">
+            <div id="overview" class="ledger-overview"><div class="overview-title"><span data-icon="chart"></span><span data-initial-fa="خلاصهٔ هزینه‌ها" data-initial-en="Expense summary">خلاصهٔ هزینه‌ها</span></div><span class="overview-amount num">—</span><div class="overview-details"><span data-initial-fa="این روز" data-initial-en="Selected day">این روز</span><span data-initial-fa="تعداد هزینه‌های ماه" data-initial-en="Expenses this month">تعداد هزینه‌های ماه</span></div></div>
             <figure class="hero-emblem">
               <img
                 src="./assets/branding/dang-emblem.webp"
+                srcset="./assets/branding/dang-emblem-180.webp 180w, ./assets/branding/dang-emblem-360.webp 360w, ./assets/branding/dang-emblem.webp 540w"
+                sizes="(max-width: 350px) 83px, (max-width: 620px) 103px, (max-width: 980px) 145px, 168px"
                 alt="نشان حکاکی‌شدهٔ جنگجوی DANG"
+                data-initial-alt-fa="نشان حکاکی‌شدهٔ جنگجوی DANG"
+                data-initial-alt-en="DANG engraved warrior emblem"
                 width="780"
                 height="910"
                 fetchpriority="high"
@@ -180,23 +187,23 @@
               <div class="panel-heading">
                 <span class="panel-symbol" data-icon="plus"></span>
                 <div>
-                  <h2 data-i="entry_heading">یک هزینهٔ تازه</h2>
-                  <p data-i="entry_note">جزئیات را وارد کن؛ باقی با ما.</p>
+                  <h2 data-i="entry_heading" data-initial-fa="یک هزینهٔ تازه" data-initial-en="A new expense">یک هزینهٔ تازه</h2>
+                  <p data-i="entry_note" data-initial-fa="مبلغ، دسته و تاریخ را ثبت کن." data-initial-en="Enter an amount, category and date.">جزئیات را وارد کن؛ باقی با ما.</p>
                 </div>
               </div>
               <div class="amount-field">
-                <label for="amt" data-i="amount">مبلغ</label>
+                <label for="amt" data-i="amount" data-initial-fa="مبلغ" data-initial-en="Amount">مبلغ</label>
                 <div class="amount-entry">
                   <input
                     id="amt"
                     name="amount"
                     inputmode="decimal"
                     autocomplete="off"
-                    data-p="ph_amt"
+                    data-p="ph_amt" placeholder="مثلاً ۱۲۰۰۰۰" data-initial-placeholder-fa="مثلاً ۱۲۰۰۰۰" data-initial-placeholder-en="e.g. 120000"
                     aria-describedby="amountNote"
                   /><span class="un"></span>
                 </div>
-                <p class="note" id="amountNote" data-i="amount_note"></p>
+                <p class="note" id="amountNote" data-i="amount_note" data-initial-fa="رقم فارسی یا انگلیسی؛ تا دو رقم اعشار." data-initial-en="Persian or English digits; up to two decimal places."></p>
                 <p
                   id="amtError"
                   class="field-error"
@@ -205,22 +212,22 @@
                 ></p>
               </div>
               <div class="field">
-                <label for="desc" data-i="desc">توضیح</label
+                <label for="desc" data-i="desc" data-initial-fa="توضیح" data-initial-en="Description">توضیح</label
                 ><input
                   id="desc"
                   name="description"
                   autocomplete="off"
-                  data-p="ph_desc"
+                  data-p="ph_desc" placeholder="مثلاً ناهار" data-initial-placeholder-fa="مثلاً ناهار" data-initial-placeholder-en="e.g. Lunch"
                   maxlength="10000"
                 />
               </div>
               <fieldset class="field">
-                <legend data-i="cat">دسته</legend>
-                <div class="chips" id="chips"></div>
+                <legend data-i="cat" data-initial-fa="دسته" data-initial-en="Category">دسته</legend>
+                <div class="chips" id="chips"><button disabled type="button" class="chip on"><i class="chip-dot" style="--category-color:#956b35" aria-hidden="true"></i><span data-i="cat_food" data-initial-fa="خوراک" data-initial-en="Food">خوراک</span></button><button disabled type="button" class="chip"><i class="chip-dot" style="--category-color:#54728b" aria-hidden="true"></i><span data-i="cat_move" data-initial-fa="رفت‌وآمد" data-initial-en="Transport">رفت‌وآمد</span></button><button disabled type="button" class="chip"><i class="chip-dot" style="--category-color:#ab655b" aria-hidden="true"></i><span data-i="cat_bill" data-initial-fa="قبوض" data-initial-en="Bills">قبوض</span></button><button disabled type="button" class="chip"><i class="chip-dot" style="--category-color:#5f7d61" aria-hidden="true"></i><span data-i="cat_shop" data-initial-fa="خرید" data-initial-en="Shopping">خرید</span></button><button disabled type="button" class="chip"><i class="chip-dot" style="--category-color:#77746b" aria-hidden="true"></i><span data-i="cat_other" data-initial-fa="سایر" data-initial-en="Other">سایر</span></button><button disabled type="button" class="chip" data-icon="plus"><span data-initial-fa="＋ دسته‌ی جدید" data-initial-en="＋ New category">＋ دسته‌ی جدید</span></button></div>
               </fieldset>
               <fieldset class="field">
-                <legend data-i="date">تاریخ</legend>
-                <div class="dp" id="dpAdd"></div>
+                <legend data-i="date" data-initial-fa="تاریخ" data-initial-en="Date">تاریخ</legend>
+                <div class="dp" id="dpAdd"><select disabled aria-label="Day"><option>—</option></select><select disabled aria-label="Month"><option>—</option></select><select disabled aria-label="Year"><option>—</option></select></div>
               </fieldset>
               <button
                 type="submit"
@@ -228,10 +235,10 @@
                 id="add"
                 data-icon="plus"
               >
-                <span data-i="add">ثبت هزینه</span>
+                <span data-i="add" data-initial-fa="ثبت هزینه" data-initial-en="Save expense">ثبت هزینه</span>
               </button>
             </form>
-            <div id="today" class="activity-feed"></div>
+            <div id="today" class="activity-feed"><div class="card activity-card"><div class="day"><div class="day-heading"><span data-icon="receipt"></span><div><span class="day-title" data-initial-fa="هزینه‌های امروز" data-initial-en="Today’s expenses">هزینه‌های امروز</span><small data-initial-date>—</small></div></div></div><div class="empty"><span class="empty-symbol" data-icon="receipt"></span><p data-initial-fa="در حال خواندن داده‌ها…" data-initial-en="Loading your data…">در حال خواندن داده‌ها…</p><small data-initial-fa="هزینهٔ تازه‌ای ثبت کن تا اینجا نمایش داده شود." data-initial-en="Save a new expense to see it here.">هزینهٔ تازه‌ای ثبت کن تا اینجا نمایش داده شود.</small></div></div></div>
           </div>
         </section>
 
@@ -244,11 +251,11 @@
           <div class="card report-filters">
             <div class="filter-grid">
               <div class="field">
-                <label for="rng" data-i="range">بازه</label
+                <label for="rng" data-i="range" data-initial-fa="بازه" data-initial-en="Range">بازه</label
                 ><select id="rng" name="range"></select>
               </div>
               <div class="field">
-                <label for="q" data-i="search">جستجو</label>
+                <label for="q" data-i="search" data-initial-fa="جستجو در توضیحات" data-initial-en="Search descriptions">جستجو</label>
                 <div class="search-field">
                   <span data-icon="search"></span
                   ><input
@@ -256,18 +263,18 @@
                     name="search"
                     type="search"
                     autocomplete="off"
-                    data-p="ph_q"
+                    data-p="ph_q" placeholder="مثلاً ناهار" data-initial-placeholder-fa="مثلاً ناهار" data-initial-placeholder-en="e.g. Lunch"
                   />
                 </div>
               </div>
             </div>
             <div id="cust" class="custom-range" hidden>
               <fieldset class="field">
-                <legend data-i="from">از تاریخ</legend>
+                <legend data-i="from" data-initial-fa="از تاریخ" data-initial-en="From">از تاریخ</legend>
                 <div class="dp" id="dpFrom"></div>
               </fieldset>
               <fieldset class="field">
-                <legend data-i="to">تا تاریخ</legend>
+                <legend data-i="to" data-initial-fa="تا تاریخ" data-initial-en="To">تا تاریخ</legend>
                 <div class="dp" id="dpTo"></div>
               </fieldset>
             </div>
@@ -275,13 +282,13 @@
           <div id="rep" class="card report-content"></div>
           <div class="export-actions">
             <button type="button" class="btn alt" id="copy" data-icon="copy">
-              <span data-i="b_copy"></span>
+              <span data-i="b_copy" data-initial-fa="کپی گزارش به‌صورت متن" data-initial-en="Copy report as text"></span>
             </button>
             <button type="button" class="btn alt" id="csv" data-icon="download">
-              <span data-i="b_csv"></span>
+              <span data-i="b_csv" data-initial-fa="خروجی CSV (برای Excel)" data-initial-en="Export CSV (for Excel)"></span>
             </button>
             <button type="button" class="btn alt" id="pdf" data-icon="print">
-              <span data-i="b_pdf"></span>
+              <span data-i="b_pdf" data-initial-fa="خروجی PDF" data-initial-en="Export PDF"></span>
             </button>
           </div>
         </section>
@@ -291,48 +298,48 @@
             <div class="panel-heading">
               <span class="panel-symbol" data-icon="palette"></span>
               <div>
-                <h2 data-i="appearance_heading">به رنگِ شما</h2>
-                <p data-i="appearance_note">
+                <h2 data-i="appearance_heading" data-initial-fa="به رنگِ شما" data-initial-en="Your palette">به رنگِ شما</h2>
+                <p data-i="appearance_note" data-initial-fa="رنگ‌هایی از سنگ، فلز و باغ‌های ایران." data-initial-en="Inspired by the stone, metal and gardens of ancient Persia.">
                   رنگ‌هایی از سنگ، فلز و باغ‌های ایران.
                 </p>
               </div>
             </div>
             <fieldset class="field">
-              <legend data-i="set_theme">ظاهر</legend>
+              <legend data-i="set_theme" data-initial-fa="ظاهر" data-initial-en="Appearance">ظاهر</legend>
               <div class="themes" id="themes"></div>
             </fieldset>
             <div class="preference-grid">
               <div class="field">
-                <label for="lang" data-i="lang">زبان</label
+                <label for="lang" data-i="lang" data-initial-fa="زبان" data-initial-en="Language">زبان</label
                 ><select id="lang" name="language">
                   <option value="fa">فارسی</option>
                   <option value="en">English</option>
                 </select>
               </div>
               <div class="field">
-                <label for="calsel" data-i="cal_type">نوع تقویم</label
+                <label for="calsel" data-i="cal_type" data-initial-fa="نوع تقویم" data-initial-en="Calendar type">نوع تقویم</label
                 ><select id="calsel" name="calendar"></select>
               </div>
               <div class="field">
-                <label for="unit" data-i="unit">واحد پول</label
+                <label for="unit" data-i="unit" data-initial-fa="واحد پول" data-initial-en="Currency">واحد پول</label
                 ><select id="unit" name="currency"></select
                 ><label
                   for="ucustom"
                   id="ucustomLabel"
-                  data-i="u_custom"
+                  data-i="u_custom" data-initial-fa="واحد دلخواه" data-initial-en="Custom unit"
                   hidden
                 ></label
                 ><input
                   id="ucustom"
                   name="custom-currency"
-                  data-p="ph_unit"
+                  data-p="ph_unit" placeholder="مثلاً دلار" data-initial-placeholder-fa="مثلاً دلار" data-initial-placeholder-en="e.g. USD"
                   maxlength="80"
                   style="display: none"
                 />
-                <p class="note" data-i="unit_note"></p>
+                <p class="note" data-i="unit_note" data-initial-fa="تغییر واحد فقط برچسب را عوض می‌کند و مبلغ‌ها تبدیل نمی‌شوند." data-initial-en="Changing the currency only changes the label; amounts are not converted."></p>
               </div>
               <div class="field">
-                <label for="bud" data-i="budget">بودجهٔ ماهانه</label
+                <label for="bud" data-i="budget" data-initial-fa="سقف بودجه‌ی ماهانه (۰ = بدون سقف)" data-initial-en="Monthly budget (0 = none)">بودجهٔ ماهانه</label
                 ><input
                   id="bud"
                   name="budget"
@@ -352,8 +359,8 @@
             <div class="panel-heading">
               <span class="panel-symbol" data-icon="tag"></span>
               <div>
-                <h2 data-i="cats_h">دسته‌بندی‌ها</h2>
-                <p data-i="categories_note">هر هزینه در جای خودش.</p>
+                <h2 data-i="cats_h" data-initial-fa="دسته‌بندی‌ها" data-initial-en="Categories">دسته‌بندی‌ها</h2>
+                <p data-i="categories_note" data-initial-fa="هر هزینه در جای خودش." data-initial-en="A place for every expense.">هر هزینه در جای خودش.</p>
               </div>
             </div>
             <div id="catlist"></div>
@@ -361,7 +368,7 @@
               <input
                 id="cname"
                 name="category-name"
-                data-p="cat_name"
+                data-p="cat_name" placeholder="نام دسته‌ی جدید" data-initial-placeholder-fa="نام دسته‌ی جدید" data-initial-placeholder-en="New category name"
                 maxlength="120"
                 aria-label="نام دسته"
               /><input
@@ -372,32 +379,32 @@
               />
             </div>
             <button type="button" class="btn alt" id="cadd" data-icon="plus">
-              <span data-i="cat_new"></span>
+              <span data-i="cat_new" data-initial-fa="افزودن دسته" data-initial-en="Add category"></span>
             </button>
           </div>
           <div class="card settings-backup">
             <div class="panel-heading">
               <span class="panel-symbol" data-icon="shield"></span>
               <div>
-                <h2 data-i="bk_h">پشتیبان‌گیری و بازیابی</h2>
-                <p data-i="backup_short">یک نسخه، برای خیال آسوده.</p>
+                <h2 data-i="bk_h" data-initial-fa="پشتیبان‌گیری و بازیابی" data-initial-en="Backup and restore">پشتیبان‌گیری و بازیابی</h2>
+                <p data-i="backup_short" data-initial-fa="یک نسخه، برای خیال آسوده." data-initial-en="Keep a copy for peace of mind.">یک نسخه، برای خیال آسوده.</p>
               </div>
             </div>
-            <p class="note" data-i="bk_note"></p>
+            <p class="note" data-i="bk_note" data-initial-fa="داده‌ها روی همین مرورگر ذخیره می‌شوند. فایل پشتیبان را در جای دیگری نگه دار؛ برای انتقال به دستگاه یا دامنهٔ دیگر هم از همین فایل استفاده کن." data-initial-en="Data is stored in this browser. Keep a backup file somewhere else; use it to transfer data to another device or domain."></p>
             <button
               type="button"
               class="btn primary"
               id="bkfile"
               data-icon="download"
             >
-              <span data-i="bk_file"></span>
+              <span data-i="bk_file" data-initial-fa="دانلود فایل پشتیبان" data-initial-en="Download backup file"></span>
             </button>
             <button type="button" class="btn alt" id="bkcopy" data-icon="copy">
-              <span data-i="bk_copy"></span>
+              <span data-i="bk_copy" data-initial-fa="کپی پشتیبان" data-initial-en="Copy backup"></span>
             </button>
             <div class="file-picker">
               <span data-icon="upload"></span
-              ><label for="bkinput" data-i="bk_open">انتخاب فایل پشتیبان</label
+              ><label for="bkinput" data-i="bk_open" data-initial-fa="انتخاب فایل پشتیبان" data-initial-en="Choose backup file">انتخاب فایل پشتیبان</label
               ><input
                 id="bkinput"
                 name="backup-file"
@@ -406,8 +413,8 @@
               />
             </div>
             <details class="backup-text">
-              <summary data-i="bk_text_option">بازیابی از متن پشتیبان</summary>
-              <label for="bk" data-i="bk_label"></label
+              <summary data-i="bk_text_option" data-initial-fa="بازیابی از متن پشتیبان" data-initial-en="Restore from backup text">بازیابی از متن پشتیبان</summary>
+              <label for="bk" data-i="bk_label" data-initial-fa="متن پشتیبان" data-initial-en="Backup text"></label
               ><textarea
                 id="bk"
                 name="backup-text"
@@ -417,7 +424,7 @@
             </details>
             <label class="check"
               ><input id="restoreSettings" type="checkbox" checked /><span
-                data-i="bk_settings"
+                data-i="bk_settings" data-initial-fa="بازیابی ظاهر، زبان، تقویم، واحد پول و بودجه نیز انجام شود" data-initial-en="Also restore appearance, language, calendar, currency and budget"
               ></span
             ></label>
             <button
@@ -426,7 +433,7 @@
               id="bkrest"
               data-icon="reload"
             >
-              <span data-i="bk_rest"></span>
+              <span data-i="bk_rest" data-initial-fa="بازیابی و ادغام با داده‌های فعلی" data-initial-en="Restore and merge with current data"></span>
             </button>
             <p
               class="note feedback"
@@ -441,7 +448,7 @@
               data-icon="download"
               hidden
             >
-              <span data-i="recovery_file"></span>
+              <span data-i="recovery_file" data-initial-fa="دانلود نسخهٔ اصلی داده‌های قبلی" data-initial-en="Download original previous data"></span>
             </button>
             <div class="storage-tools">
               <button
@@ -450,7 +457,7 @@
                 id="persist"
                 data-icon="shield"
               >
-                <span data-i="persist"></span>
+                <span data-i="persist" data-initial-fa="درخواست ماندگاری حافظه" data-initial-en="Request persistent storage"></span>
               </button>
               <p
                 class="note"
@@ -470,8 +477,8 @@
             <div class="panel-heading">
               <span class="panel-symbol" data-icon="settings"></span>
               <div>
-                <h2 data-i="w_h">پاک‌سازی</h2>
-                <p class="note" data-i="w_note"></p>
+                <h2 data-i="w_h" data-initial-fa="پاک‌سازی" data-initial-en="Clean up">پاک‌سازی</h2>
+                <p class="note" data-i="w_note" data-initial-fa="هزینه‌ها در حافظهٔ مرورگر و فایل‌های برنامه در کش آفلاین هستند. گزینه‌های زیر فقط داده‌ها و تنظیمات را تغییر می‌دهند؛ کش برنامه حفظ می‌شود." data-initial-en="Expenses use browser storage; app files use the offline cache. These actions change only expenses and settings; app files remain cached."></p>
               </div>
             </div>
             <div class="cleanup-actions">
@@ -481,7 +488,7 @@
                 id="wReload"
                 data-icon="reload"
               >
-                <span data-i="w_reload"></span>
+                <span data-i="w_reload" data-initial-fa="بارگذاری دوباره‌ی صفحه" data-initial-en="Reload page"></span>
               </button>
               <button
                 type="button"
@@ -489,7 +496,7 @@
                 id="wSet"
                 data-icon="settings"
               >
-                <span data-i="w_set"></span>
+                <span data-i="w_set" data-initial-fa="بازنشانی تنظیمات" data-initial-en="Reset settings"></span>
               </button>
               <button
                 type="button"
@@ -497,10 +504,10 @@
                 id="wItems"
                 data-icon="trash"
               >
-                <span data-i="w_items"></span>
+                <span data-i="w_items" data-initial-fa="پاک کردن همه‌ی هزینه‌ها" data-initial-en="Delete all expenses"></span>
               </button>
               <button type="button" class="btn del" id="wAll" data-icon="trash">
-                <span data-i="w_all"></span>
+                <span data-i="w_all" data-initial-fa="پاک کردن همه‌چیز (هزینه‌ها و تنظیمات)" data-initial-en="Delete everything (expenses and settings)"></span>
               </button>
             </div>
             <p
@@ -513,7 +520,7 @@
         </section>
         <footer class="workspace-footer">
           <span lang="en" translate="no">DANG</span
-          ><span data-i="footer_note">دفترِ شما، روی دستگاهِ شما.</span>
+          ><span data-i="footer_note" data-initial-fa="دفترِ شما، روی دستگاهِ شما." data-initial-en="Your ledger. Your device.">دفترِ شما، روی دستگاهِ شما.</span>
           <a
             class="author-link"
             href="https://github.com/AryanGh-imp"
@@ -522,7 +529,6 @@
             lang="en"
             dir="ltr"
             translate="no"
-            aria-label="AryanGh-imp on GitHub"
             ><span class="author-avatar" aria-hidden="true">AG</span>
             <span class="author-info"
               ><span class="author-platform">GitHub</span
@@ -558,7 +564,7 @@
       <div class="sheet">
         <div class="panel-heading">
           <span class="panel-symbol" data-icon="edit"></span>
-          <h2 id="editTitle" data-i="edit_h">ویرایش هزینه</h2>
+          <h2 id="editTitle" data-i="edit_h" data-initial-fa="ویرایش هزینه" data-initial-en="Edit expense">ویرایش هزینه</h2>
           <button
             type="button"
             id="editClose"
@@ -568,7 +574,7 @@
           ></button>
         </div>
         <div class="field">
-          <label for="eamt" data-i="amount">مبلغ</label
+          <label for="eamt" data-i="amount" data-initial-fa="مبلغ" data-initial-en="Amount">مبلغ</label
           ><input
             id="eamt"
             name="edit-amount"
@@ -579,7 +585,7 @@
           <p id="eamtError" class="field-error" aria-live="polite" hidden></p>
         </div>
         <div class="field">
-          <label for="edesc" data-i="desc">توضیح</label
+          <label for="edesc" data-i="desc" data-initial-fa="توضیح" data-initial-en="Description">توضیح</label
           ><input
             id="edesc"
             name="edit-description"
@@ -588,25 +594,28 @@
           />
         </div>
         <div class="field">
-          <label for="ecat" data-i="cat">دسته</label
+          <label for="ecat" data-i="cat" data-initial-fa="دسته" data-initial-en="Category">دسته</label
           ><select id="ecat" name="edit-category"></select>
         </div>
         <fieldset class="field">
-          <legend data-i="date">تاریخ</legend>
+          <legend data-i="date" data-initial-fa="تاریخ" data-initial-en="Date">تاریخ</legend>
           <div class="dp" id="dpEdit"></div>
         </fieldset>
         <button type="button" class="btn primary" id="esave" data-icon="check">
-          <span data-i="save"></span>
+          <span data-i="save" data-initial-fa="ذخیره" data-initial-en="Save"></span>
         </button>
         <div class="edit-secondary">
           <button type="button" class="btn alt" id="ecancel">
-            <span data-i="cancel"></span></button
+            <span data-i="cancel" data-initial-fa="انصراف" data-initial-en="Cancel"></span></button
           ><button type="button" class="btn del" id="edel" data-icon="trash">
-            <span data-i="del"></span>
+            <span data-i="del" data-initial-fa="حذف" data-initial-en="Delete"></span>
           </button>
         </div>
       </div>
     </div>
     <script type="module" src="./app.js"></script>
+    <!-- Cloudflare Web Analytics -->
+    <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "4421e6998bd746868c9720de923cedf2"}'></script>
+    <!-- End Cloudflare Web Analytics -->
   </body>
 </html>

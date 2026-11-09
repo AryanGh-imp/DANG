@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 
 export const root = fileURLToPath(new URL('../', import.meta.url));
 export const entryFiles = [
-  'index.html', 'app.js', 'store.js', 'i18n.js', 'icons.js', 'themes.js', 'locale.js', 'updates.js',
+  'index.html', 'bootstrap.js', 'app.js', 'store.js', 'i18n.js', 'icons.js', 'themes.js', 'locale.js', 'updates.js',
   'sw.js', 'manifest.webmanifest', '.nojekyll', 'LICENSE', 'NOTICE',
 ];
 

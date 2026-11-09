@@ -1,11 +1,13 @@
-const VERSION = 'dang-v1.0.0-20261109-2';
+const VERSION = 'dang-v1.0.1-20261109';
 const ROOT = new URL('./', self.location.href);
 // Include the repository path: other Pages projects on this origin have their own caches.
 const PREFIX = 'dang-app:' + ROOT.pathname + ':';
 const CACHE = PREFIX + VERSION;
-const FILES = ['index.html', 'app.js', 'store.js', 'i18n.js', 'icons.js', 'themes.js', 'locale.js', 'updates.js', 'manifest.webmanifest',
+const FILES = ['index.html', 'bootstrap.js', 'app.js', 'store.js', 'i18n.js', 'icons.js', 'themes.js', 'locale.js', 'updates.js', 'manifest.webmanifest',
   'assets/css/styles.css', 'assets/fonts/vazirmatn-arabic-wght-normal.woff2', 'assets/fonts/vazirmatn-latin-wght-normal.woff2',
-  'assets/branding/dang-emblem.webp', 'assets/branding/icon-32.png', 'assets/branding/icon-180.png',
+  'assets/branding/dang-emblem.webp', 'assets/branding/dang-emblem-180.webp', 'assets/branding/dang-emblem-360.webp',
+  'assets/branding/brand-64.webp', 'assets/branding/brand-128.webp', 'assets/branding/brand-192.webp',
+  'assets/branding/icon-32.png', 'assets/branding/icon-180.png',
   'assets/branding/icon-192.png', 'assets/branding/icon-512.png', 'assets/branding/icon-maskable-512.png'];
 const URLS = FILES.map(file => new URL(file, ROOT).href);
 
