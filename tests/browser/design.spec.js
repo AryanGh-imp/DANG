@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, isolateAnalytics } from './fixtures.js';
 import AxeBuilder from '@axe-core/playwright';
 import { mkdir } from 'node:fs/promises';
 
@@ -77,7 +77,7 @@ test('responsive RTL and English layouts keep all views usable', async ({ page }
 });
 
 test('all themes and expense dialog meet automated WCAG AA checks', async ({ page }) => {
-  test.setTimeout(120000);
+  test.setTimeout(240000);
   await start(page);
   await page.locator('#updateBanner').evaluate(element => { element.hidden = false; });
   await page.setViewportSize({ width: 390, height: 844 });
@@ -86,14 +86,14 @@ test('all themes and expense dialog meet automated WCAG AA checks', async ({ pag
     await page.locator('#themes [data-k="' + theme + '"]').click();
     for (const view of views) {
       await page.locator('#t' + view).click();
-      const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
+      const result = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze();
       expect(result.violations, theme + ' view ' + view).toEqual([]);
     }
   }
   await page.locator('#t1').click();
   await page.locator('#today .row').first().click();
   await assertLayout(page);
-  expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze()).violations).toEqual([]);
+  expect((await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa', 'wcag22aa']).analyze()).violations).toEqual([]);
   await page.keyboard.press('Escape');
   await expect(page.locator('#md')).toBeHidden();
 });
@@ -170,6 +170,7 @@ test('capture localized desktop and phone viewport previews', async ({ page, bro
   await capture(page, 'fa');
   const englishContext = await browser.newContext({ locale: 'en-US', viewport: { width: 390, height: 844 } });
   try {
+    await isolateAnalytics(englishContext);
     const englishPage = await englishContext.newPage();
     await start(englishPage, englishFixture);
     await capture(englishPage, 'en');

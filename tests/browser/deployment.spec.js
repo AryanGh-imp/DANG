@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 import { readFile } from 'node:fs/promises';
 
 test('exact GitHub Pages subpath loads branding, profile and cached expenses', async ({ page, context }) => {
@@ -33,5 +33,7 @@ test('release artifact excludes repository metadata, dependencies and backup exa
   }
   const worker = await (await request.get('/DANG/sw.js')).text();
   const { version } = JSON.parse(await readFile(new URL('../../package.json', import.meta.url), 'utf8'));
+  const html = await (await request.get('/DANG/')).text();
+  expect(html).toContain(`<meta name="application-version" content="${version}"`);
   expect(worker.match(/const VERSION = 'dang-v(.+)-([a-f0-9]{16})';/)?.[1]).toBe(version);
 });

@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures.js';
 async function fillBackup(page, text) {
   if (!await page.locator('#bk').isVisible()) await page.locator('.backup-text summary').click();
   await page.locator('#bk').fill(text);
@@ -94,7 +94,7 @@ test('Pages subpath works offline on a fresh page; root storage is isolated', as
   await context.setOffline(true); const offline = await context.newPage(); await start(offline); await expect(offline.locator('#today .row')).toHaveCount(1); await add(offline, '250');
   await context.setOffline(false); const root = await context.newPage(); await start(root, '/'); expect((await state(root)).items).toHaveLength(0); expect((await state(offline)).items).toHaveLength(2);
 });
-test('print preview is escaped, paginated, and reports print failure', async ({ page }, testInfo) => {
+test('print preview is escaped, paginated, and reports print failure', async ({ page, browserName }, testInfo) => {
   await start(page); await add(page, '100', 'ناهار <script>window.xss=true</script>'); await page.locator('#t3').click();
   await page.evaluate(() => { window.print = () => { throw new Error('forced'); }; }); await page.locator('#pdf').click();
   await expect(page.locator('#printView')).toBeVisible(); await expect(page.locator('#printMessage')).toContainText('خروجی آماده نشد'); await expect(page.locator('#printView script')).toHaveCount(0);
@@ -107,7 +107,7 @@ test('print preview is escaped, paginated, and reports print failure', async ({ 
   backup.items.push({ id: 'zz-long', date: '2026-11-07', amt: 10, cat: 'food', desc: 'START_LONG ' + 'شرح هزینهٔ بلند برای بررسی شکست صفحه و خوانایی گزارش. '.repeat(140) + ' END_LONG' });
   await fillBackup(page, JSON.stringify(backup)); await page.locator('#bkrest').click(); await expect(page.locator('#bkmsg')).toContainText('۸۱');
   await page.locator('#t3').click(); await page.locator('#pdf').click();
-  await page.pdf({ path: testInfo.outputPath('report.pdf'), preferCSSPageSize: true, printBackground: true });
+  if (browserName === 'chromium') await page.pdf({ path: testInfo.outputPath('report.pdf'), preferCSSPageSize: true, printBackground: true });
 });
 
 test('calendar/language changes preserve leap and year-boundary dates', async ({ page }) => {
